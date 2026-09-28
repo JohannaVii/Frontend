@@ -34,8 +34,12 @@ const LoginPage = () => {
 
       // går till webbshoppen efter lyckad login
       navigate("/shop", { replace: true });
-    } catch {
-      setError("Fel användarnamn eller lösenord!");
+    } catch (error) {
+      if (error instanceof Error) {
+        setError(error.message);
+      } else {
+        setError("Ett oväntat fel inträffade.");
+      }
     } finally {
       setLoading(false);
     }
