@@ -10,28 +10,49 @@ const TOKEN_KEY = "access_token";
 // returnerar inloggningssvaret med accessToken, expiresIn, subject och roller
 export async function login(credentials: LoginRequest): Promise<TokenResponse> {
   // läser inloggningssvaret från Auth Server
-  const response = await fetch(`${API_BASE}/auth/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    // gör om LoginRequest-objektet till JSON innan det skickas till backend
-    body: JSON.stringify(credentials),
-  });
+  try {
+    const response = await fetch(`${API_BASE}/auth/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      // gör om LoginRequest-objektet till JSON innan det skickas till backend
+      body: JSON.stringify(credentials),
+    });
 
-  // om Auth Server svarar med ett fel (t ex 401) kastas ett felmeddelande
-  if (!response.ok) {
-    throw new Error("Fel användarnamn eller lösenord!");
+    // fel användarnamn eller lösenord
+    if (response.status === 401 || response.status === 403) {
+      throw new Error("Fel användarnamn eller lösenord!");
+    }
+
+    // något gick fel i Auth Server
+    if (response.status >= 500) {
+      throw new Error("Serverfel. Försök igen senare.");
+    }
+
+    // övriga fel från backend
+    if (!response.ok) {
+      throw new Error("Inloggningen misslyckades!");
+    }
+
+    // läser JSON-svaret från Auth Server och sparar det som ett TokenResponse-objekt
+    const data: TokenResponse = await response.json();
+
+    // sparar accessToken i sessionStorage så att frontend kan använda den senare
+    sessionStorage.setItem(TOKEN_KEY, data.accessToken);
+
+    // returnerar inloggningssvaret till komponenten som anropar login()
+    return data;
+
+    // körs om Auth Server inte går att nå, inget svar alls
+  } catch (error) {
+    if (error instanceof TypeError) {
+      throw new Error(
+        "Kan inte ansluta till servern. Kontrollera att servern är igång.",
+      );
+    }
+    throw error;
   }
-
-  // läser JSON-svaret från Auth Server och sparar det som ett TokenResponse-objekt
-  const data: TokenResponse = await response.json();
-
-  // sparar accessToken i sessionStorage så att frontend kan använda den senare
-  sessionStorage.setItem(TOKEN_KEY, data.accessToken);
-
-  // returnerar inloggningssvaret till komponenten som anropar login()
-  return data;
 }
 
 // förberett inför kommande tasks i nästa sprint
