@@ -33,7 +33,8 @@ const LoginPage = () => {
       });
 
       // går till webbshoppen efter lyckad login
-      navigate("/shop", { replace: true });
+      //navigate("/shop", { replace: true });
+      navigate("/products", { replace: true }); // under test av kundvagnen
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
