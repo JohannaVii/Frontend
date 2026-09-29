@@ -11,9 +11,8 @@ import { useEffect } from "react";
 import { testCors } from "./test/testOrder";
 
 const App = () => {
-
   // testet körs bara en gång, när Appen startas
-useEffect(() => {
+  useEffect(() => {
     testCors();
   }, []);
 
