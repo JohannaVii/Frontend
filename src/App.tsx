@@ -11,9 +11,8 @@ import { useEffect } from "react";
 import { testCors } from "./test/testOrder";
 
 const App = () => {
-
   // testet körs bara en gång, när Appen startas
-useEffect(() => {
+  useEffect(() => {
     testCors();
   }, []);
 
@@ -26,9 +25,9 @@ useEffect(() => {
         <Route path="/shop" element={<ShopPage />} />
 
         {/* Sprint 2 - tomma sidor  */}
-        <Route path="/shop" element={<WelcomePage />} />
-        <Route path="/shop" element={<ProductPage />} />
-        <Route path="/shop" element={<OrderPage />} />
+        <Route path="/welcome" element={<WelcomePage />} />
+        <Route path="/products" element={<ProductPage />} />
+        <Route path="/orders" element={<OrderPage />} />
       </Routes>
       <Footer />
     </>
