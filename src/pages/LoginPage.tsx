@@ -27,13 +27,15 @@ const LoginPage = () => {
 
     try {
       // anropar Auth Server
-      await login({
+      const token = await login({
         username,
         password,
       });
 
+      sessionStorage.setItem("token", JSON.stringify(token));
+      
       // går till webbshoppen efter lyckad login
-      navigate("/shop", { replace: true });
+      navigate("/welcome", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);

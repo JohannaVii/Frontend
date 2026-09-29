@@ -41,6 +41,8 @@ export async function login(credentials: LoginRequest): Promise<TokenResponse> {
     // sparar accessToken i sessionStorage så att frontend kan använda den senare
     sessionStorage.setItem(TOKEN_KEY, data.accessToken);
 
+    sessionStorage.setItem("user", JSON.stringify(data));
+
     // returnerar inloggningssvaret till komponenten som anropar login()
     return data;
 
