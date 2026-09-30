@@ -9,6 +9,7 @@ import OrderPage from "./pages/OrderPage";
 import { useEffect } from "react";
 // för att testa Order Service CORS config
 import { testCors } from "./test/testOrder";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 const App = () => {
   // testet körs bara en gång, när Appen startas
@@ -25,9 +26,11 @@ const App = () => {
         <Route path="/shop" element={<ShopPage />} />
 
         {/* Sprint 2 - tomma sidor  */}
-        <Route path="/welcome" element={<WelcomePage />} />
-        <Route path="/products" element={<ProductPage />} />
-        <Route path="/orders" element={<OrderPage />} />
+        <Route element={<ProtectedRoute />}>
+          <Route path="/welcome" element={<WelcomePage />} />
+          <Route path="/products" element={<ProductPage />} />
+          <Route path="/orders" element={<OrderPage />} />
+        </Route>
       </Routes>
       <Footer />
     </>
