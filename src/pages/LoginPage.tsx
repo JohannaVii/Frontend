@@ -31,9 +31,9 @@ const LoginPage = () => {
         username,
         password,
       });
-
+      
       // går till webbshoppen efter lyckad login
-      navigate("/shop", { replace: true });
+      navigate("/welcome", { replace: true });
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
