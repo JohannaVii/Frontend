@@ -7,7 +7,7 @@ const ProtectedRoute = () => {
     return <Navigate to="/login" replace />;
   }
   console.log("Du är inloggad!");
-  return <>{Outlet}</>;
+ return;
 };
 
 export default ProtectedRoute;
