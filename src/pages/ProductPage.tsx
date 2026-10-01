@@ -79,6 +79,10 @@ const ProductPage = () => {
     // letar efter produkten i kundvagnen
     const index = cartItems.findIndex((item) => item.id === productId);
 
+    if (index === -1) {
+      return;
+    }
+
     // hämtar produkten som ska uppdateras
     const currentItem = cartItems[index];
 
@@ -104,6 +108,10 @@ const ProductPage = () => {
   const decreaseQuantity = (productId: number) => {
     // letar efter produkten i kundvagnen
     const index = cartItems.findIndex((item) => item.id === productId);
+
+    if (index === -1) {
+      return;
+    }
 
     // hämtar produkten som ska uppdateras
     const currentItem = cartItems[index];
