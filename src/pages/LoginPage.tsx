@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { login } from "../services/authServer";
+import type { LoginRequest } from "../types/auth";
 
-const LoginPage = () => {
+type LogginPageProps = {
+  onLogin: (credentials: LoginRequest) => Promise<void>;
+}
+
+const LoginPage = ({onLogin}: LogginPageProps) => {
   // sparar användarens e-postadress
   const [username, setUsername] = useState("");
 
@@ -27,7 +31,7 @@ const LoginPage = () => {
 
     try {
       // anropar Auth Server
-      await login({
+      await onLogin({
         username,
         password,
       });

@@ -1,11 +1,10 @@
-import { isAuthenticated, logout } from "../services/authServer";
 import { Link } from "react-router-dom";
 
-const Header = () => {
-  const loggedIn = isAuthenticated();
-  const handleLogout = () => {
-    logout();
-  };
+type HeaderProps = {
+  loggIn: boolean;
+  onLogout: () => Promise<void>;
+}
+const Header = ({loggIn, onLogout}: HeaderProps) => {
 
   return (
     <header className="border-b border-slate-200 bg-white shadow-sm">
@@ -19,13 +18,13 @@ const Header = () => {
         <nav className="flex gap-6">
           <Link to="/products">Produkter</Link>
 
-          {!loggedIn && <Link to="/login">Logga in</Link>}
+          {!loggIn && <Link to="/login">Logga in</Link>}
 
-          {loggedIn && (
+          {loggIn && (
             <>
               <Link to="/shop">Kundvagn</Link>
               <Link to="/orders">Ordrar</Link>
-              <Link to="/login" onClick={handleLogout}>
+              <Link to="/login" onClick={onLogout}>
                 Logga ut
               </Link>
             </>
