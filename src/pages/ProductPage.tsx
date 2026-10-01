@@ -31,18 +31,105 @@ const ProductPage = () => {
 
   // funktionen körs när användaren klickar på "Lägg i kundvagnen"
   const addToCart = (product: Product) => {
-    const cartItem: CartItem = {
-      ...product,
-      quantity: 1,
+    // leta efter produkten i kundvagnen
+    const index = cartItems.findIndex((item) => item.id === product.id);
+
+    // produkten finns inte i kundvagnen ännu
+    if (index === -1) {
+      // skapar en CartItem från produkten
+      // alla produktens fält kopieras (...product) och quantity sätts till 1
+      const newItem: CartItem = {
+        ...product,
+        quantity: 1,
+      };
+
+      // lägger till den nya produkten sist i kundvagnen
+      setCartItems([...cartItems, newItem]);
+
+      // bekräftelse att produkten lagts till
+      alert(`${product.name} har lagts i kundvagnen`);
+      return;
+    }
+
+    // produkten finns redan i kundvagnen
+    const currentItem = cartItems[index];
+
+    // kontrollera att antalet inte överstiger lagersaldot
+    if (currentItem.quantity >= currentItem.stock) {
+      alert("Det finns inte tillräckligt med produkter i lager.");
+      return;
+    }
+
+    // kopierar kundvagnen och uppdaterar den valda produkten
+    const updatedItems = [...cartItems];
+
+    updatedItems[index] = {
+      ...currentItem,
+      quantity: currentItem.quantity + 1,
     };
 
-    setCartItems((currentItems) => [...currentItems, cartItem]);
+    // sparar den uppdaterade kundvagnen
+    setCartItems(updatedItems);
 
     alert(`${product.name} har lagts i kundvagnen`);
   };
+
+  // ökar antalet av en produkt som redan finns i kundvagnen
+  const increaseQuantity = (productId: number) => {
+    // letar efter produkten i kundvagnen
+    const index = cartItems.findIndex((item) => item.id === productId);
+
+    // hämtar produkten som ska uppdateras
+    const currentItem = cartItems[index];
+
+    // kontrollerar att antalet inte överstiger lagersaldot
+    if (currentItem.quantity >= currentItem.stock) {
+      alert("Det finns inte tillräckligt med produkter i lager.");
+      return;
+    }
+
+    // kopierar kundvagnen och uppdaterar den valda produkten
+    const updatedItems = [...cartItems];
+
+    updatedItems[index] = {
+      ...currentItem,
+      quantity: currentItem.quantity + 1,
+    };
+
+    // sparar den uppdaterade kundvagnen
+    setCartItems(updatedItems);
+  };
+
+  // minskar antalet av en produkt som redan finns i kundvagnen
+  const decreaseQuantity = (productId: number) => {
+    // letar efter produkten i kundvagnen
+    const index = cartItems.findIndex((item) => item.id === productId);
+
+    // hämtar produkten som ska uppdateras
+    const currentItem = cartItems[index];
+
+    // kopierar kundvagnen
+    const updatedItems = [...cartItems];
+
+    // om antalet är 1 tas produkten bort från kundvagnen
+    if (currentItem.quantity === 1) {
+      updatedItems.splice(index, 1);
+      setCartItems(updatedItems);
+      return;
+    }
+
+    updatedItems[index] = {
+      ...currentItem,
+      quantity: currentItem.quantity - 1,
+    };
+
+    // sparar den uppdaterade kundvagnen
+    setCartItems(updatedItems);
+  };
+
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
-      <h1 className="mb-8 text-3xl font-bold">ProductPage</h1>
+      <h1 className="mb-8 text-3xl font-bold">Produkter</h1>
 
       {error ? (
         <p>ERROR: {error}</p>
@@ -65,7 +152,11 @@ const ProductPage = () => {
       {/* kundvagnen visas bara när showCart är true */}
       {showCart && (
         <div className="mt-8">
-          <Cart items={cartItems} />
+          <Cart
+            items={cartItems}
+            onIncrease={increaseQuantity}
+            onDecrease={decreaseQuantity}
+          />
         </div>
       )}
     </main>
