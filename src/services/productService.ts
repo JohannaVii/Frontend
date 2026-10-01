@@ -8,7 +8,7 @@ export async function getProducts(): Promise<Product[]> {
 
   const response = await fetch(`${API_BASE}/products`, {
     method: "GET",
-    headers: { Authorization: `Bearer ${token}` },
+    headers: token ? { Authorization: `Bearer ${token}` } : {},
   });
 
   if (!response.ok) {
