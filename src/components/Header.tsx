@@ -1,4 +1,3 @@
-import { isAuthenticated, logout } from "../services/authServer";
 import { Link } from "react-router-dom";
 
 type HeaderProps = {
