@@ -14,13 +14,13 @@ const App = () => {
       <Header />
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/shop" element={<ShopPage />} />
+        <Route path="/login" element={<LoginPage />} /> 
+        <Route path="/products" element={<ProductPage />}></Route>
 
         {/* Sprint 2 - tomma sidor  */}
         <Route element={<ProtectedRoute />}>
           <Route path="/welcome" element={<WelcomePage />} />
-          <Route path="/products" element={<ProductPage />} />
+          <Route path="/shop" element={<ShopPage />} />
           <Route path="/orders" element={<OrderPage />} />
         </Route>
       </Routes>
