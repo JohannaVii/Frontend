@@ -1,3 +1,4 @@
+import * as authService from "./services/authServer";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { Navigate, Route, Routes } from "react-router-dom";
@@ -6,23 +7,35 @@ import ShopPage from "./pages/ShopPage";
 import WelcomePage from "./pages/WelcomePage";
 import ProductPage from "./pages/ProductPage";
 import OrderPage from "./pages/OrderPage";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 // för att testa Order Service CORS config
 import { testCors } from "./test/testOrder";
 import ProtectedRoute from "./components/ProtectedRoute";
+import type { LoginRequest } from "./types/auth";
 
 const App = () => {
   // testet körs bara en gång, när Appen startas
+  const [loggedIn, setLoggedIn] = useState(() => authService.isAuthenticated());
   useEffect(() => {
     testCors();
   }, []);
 
+  const loggIn = async (credentials: LoginRequest) => {
+    await authService.login(credentials);
+    setLoggedIn(true);
+  };
+
+   const handleLogout = async () => {
+    await authService.logout();
+    setLoggedIn(false);
+  };
+
   return (
     <>
-      <Header />
+      <Header loggIn={loggedIn} onLogout={handleLogout} />
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
-        <Route path="/login" element={<LoginPage />} /> 
+        <Route path="/login" element={<LoginPage onLogin={loggIn} />} />
         <Route path="/products" element={<ProductPage />}></Route>
 
         {/* Sprint 2 - tomma sidor  */}
