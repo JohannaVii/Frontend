@@ -7,7 +7,7 @@ import ShopPage from "./pages/ShopPage";
 import WelcomePage from "./pages/WelcomePage";
 import ProductPage from "./pages/ProductPage";
 import OrderPage from "./pages/OrderPage";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 // för att testa Order Service CORS config
 import { testCors } from "./test/testOrder";
 import ProtectedRoute from "./components/ProtectedRoute";
@@ -15,20 +15,9 @@ import type { LoginRequest } from "./types/auth";
 
 const App = () => {
   // testet körs bara en gång, när Appen startas
-  const [loggedIn, setLoggedIn] = useState(() => authService.isAuthenticated());
   useEffect(() => {
     testCors();
   }, []);
-
-  const loggIn = async (credentials: LoginRequest) => {
-    await authService.login(credentials);
-    setLoggedIn(true);
-  };
-
-   const handleLogout = async () => {
-    await authService.logout();
-    setLoggedIn(false);
-  };
 
   return (
     <>
