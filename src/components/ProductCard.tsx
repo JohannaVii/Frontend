@@ -12,6 +12,13 @@ const ProductCard = ({ product, onAdd }: ProductCardProps) => {
   return (
     <div>
       <h3 className="mb-4 text-xl font-semibold">{product.name}</h3>
+      <p>{product.description}</p>
+      <p>
+        <b>Pris:</b> {product.price} kr
+      </p>
+      <p>
+        <b>Lagersaldo:</b> {product.stock}
+      </p>
 
       {/* knappen visas bara om ProductPage skickar med onAdd */}
       {onAdd && (

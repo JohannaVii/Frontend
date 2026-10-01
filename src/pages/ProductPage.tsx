@@ -1,54 +1,59 @@
-import { useState } from "react";
-import Cart from "../components/Cart"; // komponenten som visar innehållet i kundvagnen
-import type { CartItem } from "../types/cart"; // typen för en produkt i kundvagnen
-import type { Product } from "../types/product"; // typen för en produkt från Product Service
-import ProductCard from "../components/ProductCard"; // komponenten som visar en enskild produkt
+import { useEffect, useState } from "react";
+import Cart from "../components/Cart";
+import type { CartItem } from "../types/cart";
+import type { Product } from "../types/product";
+import ProductCard from "../components/ProductCard";
+import { getProducts } from "../services/productService";
 
-// sidan håller reda på kundvagnen, skickar vidare information till andra komponenter
 const ProductPage = () => {
+  const [products, setProducts] = useState<Product[]>([]);
+  const [error, setError] = useState<string | null>(null);
+
   // här sparas produkterna som användaren har lagt i kundvagnen
-  // cartItems = alla produkter som ligger i kundvagnen, från början tom ([])
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
   // bestämmer om kundvagnen ska synas eller inte
-  // false = dold, true = visas
   const [showCart, setShowCart] = useState(false);
+
+  // hämtar produkter från Product Service
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const data = await getProducts();
+        setProducts(data);
+      } catch {
+        setError("Produkter kunde inte hämtas.");
+      }
+    };
+
+    fetchProducts();
+  }, []);
 
   // funktionen körs när användaren klickar på "Lägg i kundvagnen"
   const addToCart = (product: Product) => {
-    // skapar en CartItem från produkten, produktens fält kopieras (...product)
-    // och quantity sätts till 1
     const cartItem: CartItem = {
       ...product,
       quantity: 1,
     };
 
-    // tidigare produkter behålls
-    // lägger till den nya CartItem sist i listan
     setCartItems((currentItems) => [...currentItems, cartItem]);
 
-    // bekräftelse att produkten lagts till
     alert(`${product.name} har lagts i kundvagnen`);
   };
-
-  // tillfällig produkt som tas bort när FE-11 är mergad,
-  // då hämtas riktiga produkter från backend
-  const tempProduct: Product = {
-    id: 1,
-    name: "Testprodukt",
-    description: "Bara för test av FE-15",
-    price: 100,
-    stock: 50,
-  };
-
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
       <h1 className="mb-8 text-3xl font-bold">ProductPage</h1>
 
-      {/* visar en produkt och skickar med funktionen addToCart */}
-      <div className="mb-8 max-w-sm rounded-lg border p-6 shadow-sm">
-        <ProductCard product={tempProduct} onAdd={addToCart} />
-      </div>
+      {error ? (
+        <p>ERROR: {error}</p>
+      ) : products.length === 0 ? (
+        <p>Produktlistan är tom.</p>
+      ) : (
+        products.map((product) => (
+          <ProductCard key={product.id} product={product} onAdd={addToCart} />
+        ))
+      )}
+
       {/* knapp som visar eller döljer kundvagnen */}
       <button
         onClick={() => setShowCart(!showCart)}
