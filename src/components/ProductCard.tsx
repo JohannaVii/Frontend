@@ -10,7 +10,7 @@ type ProductCardProps = {
 
 const ProductCard = ({ product, onAdd }: ProductCardProps) => {
   return (
-    <div>
+    <div className="rounded-xl border bg-white p-6 shadow-sm">
       <h3 className="mb-4 text-xl font-semibold">{product.name}</h3>
       <p>{product.description}</p>
       <p>

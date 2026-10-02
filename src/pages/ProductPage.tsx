@@ -144,15 +144,17 @@ const ProductPage = () => {
       ) : products.length === 0 ? (
         <p>Produktlistan är tom.</p>
       ) : (
-        products.map((product) => (
-          <ProductCard key={product.id} product={product} onAdd={addToCart} />
-        ))
+        <div className="grid gap-6">
+          {products.map((product) => (
+            <ProductCard key={product.id} product={product} onAdd={addToCart} />
+          ))}
+        </div>
       )}
 
       {/* knapp som visar eller döljer kundvagnen */}
       <button
         onClick={() => setShowCart(!showCart)}
-        className="rounded-md px-4 py-2 font-medium shadow-sm"
+        className="mt-8 rounded-md px-4 py-2 font-medium shadow-sm"
       >
         {showCart ? "Dölj kundvagn" : "Visa kundvagn"}
       </button>
