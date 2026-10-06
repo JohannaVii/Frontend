@@ -3,7 +3,7 @@ import { isAuthenticated } from "../services/authServer";
 
 const AdminRoute = () => {
   if (!isAuthenticated()) {
-    console.log("Du är inte inloggad!");
+    {/*Om användaren inte är inloggad skickas den till Logga in sidan*/}
     return <Navigate to="/login" replace />;
   }
 
@@ -16,7 +16,7 @@ const AdminRoute = () => {
   const user = JSON.parse(userData);
 
   if (!user?.roles?.includes("ROLE_ADMIN")) {
-    console.log("Inte admin - skickar till products");
+    {/*Om inloggaren inte är admin så skickas den till products*/}
     return <Navigate to="/products" replace />;
   }
 
