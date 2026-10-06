@@ -15,19 +15,11 @@ const AdminRoute = () => {
 
   const user = JSON.parse(userData);
 
-  console.log("ADMIN ROUTE USER:", user);
-  console.log("ROLES:", user?.roles);
-  console.log(
-    "IS ADMIN:",
-    user?.roles?.includes("ROLE_ADMIN")
-  );
-
   if (!user?.roles?.includes("ROLE_ADMIN")) {
     console.log("Inte admin - skickar till products");
     return <Navigate to="/products" replace />;
   }
 
-  console.log("Admin godkänd!");
   return <Outlet />;
 };
 
