@@ -3,8 +3,12 @@ import { Link } from "react-router-dom";
 type HeaderProps = {
   loggIn: boolean;
   onLogout: () => Promise<void>;
-}
-const Header = ({loggIn, onLogout}: HeaderProps) => {
+};
+const Header = ({ loggIn, onLogout }: HeaderProps) => {
+  //Hämtar användare och kollar om Role = Admin
+  const userData = sessionStorage.getItem("user");
+  const user = userData ? JSON.parse(userData) : null;
+  const isAdmin = user?.roles?.includes("ROLE_ADMIN");
 
   return (
     <header className="border-b border-slate-200 bg-white shadow-sm">
@@ -16,14 +20,25 @@ const Header = ({loggIn, onLogout}: HeaderProps) => {
           KJPJ
         </h1>
         <nav className="flex gap-6">
-          <Link to="/products">Produkter</Link>
-
-          {!loggIn && <Link to="/login">Logga in</Link>}
+          {!loggIn && (
+            <>
+              <Link to="/products">Produkter</Link>
+              {!loggIn && <Link to="/login">Logga in</Link>}
+            </>
+          )}
 
           {loggIn && (
             <>
-              <Link to="/shop">Kundvagn</Link>
-              <Link to="/orders">Ordrar</Link>
+              {isAdmin ? (
+                <Link to="/adminPage">AdminProdukter</Link>
+              ) : (
+                <>
+                  <Link to="/products">Produkter</Link>
+                  <Link to="/shop">Kundvagn</Link>
+                  <Link to="/orders">Ordrar</Link>
+                </>
+              )}
+
               <Link to="/login" onClick={onLogout}>
                 Logga ut
               </Link>

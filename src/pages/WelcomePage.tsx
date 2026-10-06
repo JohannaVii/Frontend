@@ -1,5 +1,5 @@
 const WelcomePage = () => {
-  //Hämtar användare
+  //Hämtar användare som är lagrad i SessionStorage.
   const userData = sessionStorage.getItem("user");
 
   //Skriver ut om ingen anvvändare är inloggad eller om sidan inte kan hämta användare
@@ -7,6 +7,7 @@ const WelcomePage = () => {
     return <p>Ingen användare är inloggad</p>;
   }
 
+  //Gör om stringen till ett JavaScript objekt
   const user = JSON.parse(userData);
 
   //En typ av if/else som ändrar roll till Admin eller Kund beroende på roll

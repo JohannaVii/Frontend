@@ -12,6 +12,8 @@ import { useEffect, useState } from "react";
 import { testCors } from "./test/testOrder";
 import ProtectedRoute from "./components/ProtectedRoute";
 import type { LoginRequest } from "./types/auth";
+import AdminProductPage from "./pages/AdminProductPage";
+import AdminRoute from "./components/AdminRoute";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(authService.isAuthenticated());
@@ -45,6 +47,12 @@ const App = () => {
           <Route path="/shop" element={<ShopPage />} />
           <Route path="/orders" element={<OrderPage />} />
         </Route>
+
+        {/*Sida skyddad från kunder */}
+        <Route element={<AdminRoute />}>
+          <Route path="/adminPage" element={<AdminProductPage />}></Route>
+        </Route>
+        
       </Routes>
       <Footer />
     </>
