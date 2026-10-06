@@ -3,16 +3,15 @@ import { Link } from "react-router-dom";
 type HeaderProps = {
   loggIn: boolean;
   onLogout: () => Promise<void>;
+  cartItemCount: number;
 };
-const Header = ({ loggIn, onLogout }: HeaderProps) => {
-  //Hämtar användare och kollar om Role = Admin
+ 
+const Header = ({ loggIn, onLogout, cartItemCount }: HeaderProps) => {
+  // Hämtar användaren från sessionStorage och kontrollerar om rollen är ADMIN
   const userData = sessionStorage.getItem("user");
   const user = userData ? JSON.parse(userData) : null;
   const isAdmin = user?.roles?.includes("ROLE_ADMIN");
-
-  cartItemCount: number;
-};
-const Header = ({ loggIn, onLogout, cartItemCount }: HeaderProps) => {
+  
   return (
     <header className="border-b border-slate-200 bg-white shadow-sm">
       <div className="mx-auto max-w-7xl px-6 flex h-16 items-center justify-between">
