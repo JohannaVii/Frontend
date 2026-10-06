@@ -3,9 +3,9 @@ import { Link } from "react-router-dom";
 type HeaderProps = {
   loggIn: boolean;
   onLogout: () => Promise<void>;
-}
-const Header = ({loggIn, onLogout}: HeaderProps) => {
-
+  cartItemCount: number;
+};
+const Header = ({ loggIn, onLogout, cartItemCount }: HeaderProps) => {
   return (
     <header className="border-b border-slate-200 bg-white shadow-sm">
       <div className="mx-auto max-w-7xl px-6 flex h-16 items-center justify-between">
@@ -22,7 +22,7 @@ const Header = ({loggIn, onLogout}: HeaderProps) => {
 
           {loggIn && (
             <>
-              <Link to="/shop">Kundvagn</Link>
+              <Link to="/cart">Kundvagn ({cartItemCount})</Link>
               <Link to="/orders">Ordrar</Link>
               <Link to="/login" onClick={onLogout}>
                 Logga ut
