@@ -9,6 +9,8 @@ const product: Product = {
   description: "En beskrivning till produkt-1",
   price: 100,
   stock: 10,
+  category: "NECKLACES",
+  imageUrl: "/images/necklaces/test.avif",
 };
 
 describe("ProductCard", () => {

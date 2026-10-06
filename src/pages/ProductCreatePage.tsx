@@ -1,4 +1,5 @@
 import ProductForm from "../components/ProductForm";
+import type { Category } from "../types/category";
 
 const ProductCreatePage = () => {
   // tar emot data från ProductForm
@@ -8,6 +9,8 @@ const ProductCreatePage = () => {
     description: string;
     price: number;
     stock: number;
+    category: Category;
+    imageUrl: string;
   }) => {
     console.log("Produktdata:", formData); // när FE-20B kopplar ihop API:t ska denna ersättas
   };
