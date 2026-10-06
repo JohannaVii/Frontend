@@ -8,10 +8,12 @@ type CartProps = {
   onIncrease: (productId: number) => void;
   // funktion som minskar quantity
   onDecrease: (productId: number) => void;
+  // funktion som skickar kundvagnen som en order
+  onCheckout: () => void;
 };
 
 // visar kundvagnen
-const Cart = ({ items, onIncrease, onDecrease }: CartProps) => {
+const Cart = ({ items, onIncrease, onDecrease, onCheckout }: CartProps) => {
   // om kundvagnen är tom visas ett meddelande
   if (items.length === 0) {
     return (
@@ -87,6 +89,14 @@ const Cart = ({ items, onIncrease, onDecrease }: CartProps) => {
       <div className="mt-6 border-t pt-4">
         <p className="text-lg font-bold">Totalt: {totalPrice} kr</p>
       </div>
+
+      {/* knapp för att skicka kundvagnen som en order */}
+      <button
+        onClick={onCheckout}
+        className="mt-4 rounded-md px-4 py-2 font-medium shadow-sm"
+      >
+        Skapa order
+      </button>
     </section>
   );
 };
