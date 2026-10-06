@@ -10,6 +10,8 @@ import OrderPage from "./pages/OrderPage";
 import { useState, useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import type { LoginRequest } from "./types/auth";
+import AdminProductPage from "./pages/AdminProductPage";
+import AdminRoute from "./components/AdminRoute";
 import type { CartItem } from "./types/cart";
 import type { Product } from "./types/product";
 import type { OrderRequest } from "./types/order";
@@ -225,6 +227,12 @@ const App = () => {
           />
           <Route path="/orders" element={<OrderPage />} />
         </Route>
+
+        {/*Sida skyddad från kunder */}
+        <Route element={<AdminRoute />}>
+          <Route path="/adminPage" element={<AdminProductPage />}></Route>
+        </Route>
+        
       </Routes>
       <Footer />
     </>
