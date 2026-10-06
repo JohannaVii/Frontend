@@ -10,6 +10,9 @@ const Header = ({ loggIn, onLogout }: HeaderProps) => {
   const user = userData ? JSON.parse(userData) : null;
   const isAdmin = user?.roles?.includes("ROLE_ADMIN");
 
+  cartItemCount: number;
+};
+const Header = ({ loggIn, onLogout, cartItemCount }: HeaderProps) => {
   return (
     <header className="border-b border-slate-200 bg-white shadow-sm">
       <div className="mx-auto max-w-7xl px-6 flex h-16 items-center justify-between">
@@ -19,32 +22,32 @@ const Header = ({ loggIn, onLogout }: HeaderProps) => {
         >
           KJPJ
         </h1>
-        <nav className="flex gap-6">
-          {!loggIn && (
-            <>
-              <Link to="/products">Produkter</Link>
-              {!loggIn && <Link to="/login">Logga in</Link>}
-            </>
-          )}
+<nav className="flex gap-6">
+  {!loggIn && (
+    <>
+      <Link to="/products">Produkter</Link>
+      <Link to="/login">Logga in</Link>
+    </>
+  )}
 
-          {loggIn && (
-            <>
-              {isAdmin ? (
-                <Link to="/adminPage">AdminProdukter</Link>
-              ) : (
-                <>
-                  <Link to="/products">Produkter</Link>
-                  <Link to="/shop">Kundvagn</Link>
-                  <Link to="/orders">Ordrar</Link>
-                </>
-              )}
+  {loggIn && (
+    <>
+      {isAdmin ? (
+        <Link to="/adminPage">AdminProdukter</Link>
+      ) : (
+        <>
+          <Link to="/products">Produkter</Link>
+          <Link to="/cart">Kundvagn ({cartItemCount})</Link>
+          <Link to="/orders">Ordrar</Link>
+        </>
+      )}
 
-              <Link to="/login" onClick={onLogout}>
-                Logga ut
-              </Link>
-            </>
-          )}
-        </nav>
+      <Link to="/login" onClick={onLogout}>
+        Logga ut
+      </Link>
+    </>
+  )}
+</nav>
       </div>
     </header>
   );
