@@ -16,6 +16,7 @@ import type { CartItem } from "./types/cart";
 import type { Product } from "./types/product";
 import type { OrderRequest } from "./types/order";
 import { createOrder } from "./services/orderService";
+import ProductCreatePage from "./pages/ProductCreatePage";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(authService.isAuthenticated());
@@ -231,8 +232,8 @@ const App = () => {
         {/*Sida skyddad från kunder */}
         <Route element={<AdminRoute />}>
           <Route path="/adminPage" element={<AdminProductPage />}></Route>
+          <Route path="/createProduct" element={<ProductCreatePage />}></Route>
         </Route>
-        
       </Routes>
       <Footer />
     </>
