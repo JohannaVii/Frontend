@@ -1,7 +1,11 @@
-import { render, screen } from "@testing-library/react";
-import { describe, it, expect, vi } from "vitest";
+import { render, screen, cleanup } from "@testing-library/react";
+import { afterEach, describe, it, expect, vi } from "vitest";
 import ProductCard from "../components/ProductCard";
 import type { Product } from "../types/product";
+
+afterEach(() => {
+  cleanup();
+});
 
 const product: Product = {
   id: 1,
@@ -22,6 +26,30 @@ describe("ProductCard", () => {
     ).toBeInTheDocument();
     expect(screen.getByText("100 kr")).toBeInTheDocument();
     expect(screen.getByText("10")).toBeInTheDocument();
+  });
+
+  it("Visar produktbild när imageUrl finns", () => {
+    render(<ProductCard product={product} />);
+
+    const image = screen.getByRole("img", {
+      name: "Test-produkt 1",
+    });
+
+    expect(image).toBeInTheDocument();
+    expect(image).toHaveAttribute("src", "/images/necklaces/test.avif");
+  });
+
+  it("Visar ingen produktbild när imageUrl saknas", () => {
+    const productWithoutImage = {
+      ...product,
+      imageUrl: "",
+    };
+
+    render(<ProductCard product={productWithoutImage} />);
+
+    expect(
+      screen.queryByRole("img", { name: "Test-produkt 1" }),
+    ).not.toBeInTheDocument();
   });
 
   it("Kör onAdd med rätt produkt", () => {
