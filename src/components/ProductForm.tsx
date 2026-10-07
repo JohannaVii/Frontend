@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { categories, type Category } from "../types/category";
 
 // data som formuläret skickar vidare när användaren klickar på Skapa produkt
 type ProductFormData = {
@@ -6,6 +7,8 @@ type ProductFormData = {
   description: string;
   price: number;
   stock: number;
+  category: Category;
+  imageUrl: string;
 };
 
 // ProductForm tar emot en onSubmit-funktion från sidan som använder formuläret
@@ -19,32 +22,43 @@ const ProductForm = ({ onSubmit }: ProductFormProps) => {
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
   const [stock, setStock] = useState("");
+  // state sparar den kategori som användaren har valt
+  // BRACELETS är vald från början
+  const [category, setCategory] = useState<Category>("BRACELETS");
+  // state sparar bildadressen som användaren skriver in
+  const [imageUrl, setImageUrl] = useState("");
 
+  // state används för att visa felmeddelanden
   const [error, setError] = useState("");
 
   // körs när användaren skickar formuläret
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
 
-    // Kontrollera att priset är större än 0
+    // kontrollera att priset är större än 0
     if (Number(price) <= 0) {
       setError("Priset måste vara större än noll!");
       return;
     }
 
-    // Kontrollera att lagersaldot inte är negativt
-    if (Number(stock) < 0) setError("Lagersaldo kan inte vara negativt!");
-    return;
+    // kontrollera att lagersaldot inte är negativt
+    if (Number(stock) < 0) {
+      setError("Lagersaldo kan inte vara negativt!");
+      return;
+    }
 
-    // Ta bort tidigare fel om formuläret är korrekt
+    // ta bort tidigare fel om formuläret är korrekt
     setError("");
 
-    // gör om formulärvärdena till den datatyp som Product Service förväntar sig
+    // samlar formulärets värden i ett objekt
+    // price och stock omvandlas från text till number
     const formData: ProductFormData = {
       name,
       description,
-      price: Number(stock),
-      stock: Number(price),
+      price: Number(price),
+      stock: Number(stock),
+      category,
+      imageUrl,
     };
 
     // skickar formulärets data vidare till sidan
@@ -52,6 +66,7 @@ const ProductForm = ({ onSubmit }: ProductFormProps) => {
   };
 
   return (
+    // använder handleSubmit när användaren klickar på Skapa produkt
     <form
       onSubmit={handleSubmit}
       className="max-w-xl space-y-5 rounded-xl border bg-white p-6 shadow-sm"
@@ -119,12 +134,50 @@ const ProductForm = ({ onSubmit }: ProductFormProps) => {
         />
       </div>
 
+      {/* Produktens kategori */}
+      <div>
+        <label htmlFor="category" className="mb-1 block font-medium">
+          Kategori
+        </label>
+        <select
+          id="category"
+          value={category}
+          onChange={(event) => setCategory(event.target.value as Category)}
+          required
+          className="w-full rounded-md border px-3 py-2"
+        >
+          {/* Skapar ett alternativ i listan för varje kategori */}
+          {categories.map((categoryOption) => (
+            <option key={categoryOption} value={categoryOption}>
+              {categoryOption}
+            </option>
+          ))}
+        </select>
+      </div>
+
+      {/* Produktens bildadress */}
+      <div>
+        <label htmlFor="imageUrl" className="mb-1 block font-medium">
+          Bild-URL
+        </label>
+        <input
+          id="imageUrl"
+          type="url"
+          value={imageUrl}
+          onChange={(event) => setImageUrl(event.target.value)}
+          placeholder="Ange URL till produktbild"
+          required
+          className="w-full rounded-md border px-3 py-2"
+        />
+      </div>
+
+      {/* Visar felmeddelande om något är fel */}
       {error && (
         <p className="text-sm text-red-600" role="alert">
           {error}
         </p>
       )}
-      {/* Skicka formuläret */}
+      {/* Knapp som skickar formuläret */}
       <button
         type="submit"
         className="rounded-md bg-pink-500 px-5 py-2 font-medium text-white hover:bg-pink-600"
