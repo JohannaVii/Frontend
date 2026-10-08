@@ -75,9 +75,9 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
         
         <div className="space-y-10">
           {categories.map((category) => {
-            const categoryProducts = products.filter(
-              (product) => product.category === category && (selectedCategory === "Alla" || product.category === selectedCategory),
-            );
+            const categoryProducts = filteredProducts.filter(
+(product) => product.category === category,
+);
 
             // visa inte kategorin om den inte har några produkter
             if (categoryProducts.length === 0) {
