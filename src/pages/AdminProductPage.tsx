@@ -22,7 +22,7 @@ const AdminProductPage = () => {
   }, []);
 
   // översätter backends kategorinamn till svenska för visning på sidan
-  const categoryNames: Record<string, string> = {
+  const categoryNames: Record<Category, string> = {
     BRACELETS: "Armband",
     NECKLACES: "Halsband",
     EARRINGS: "Örhängen",
