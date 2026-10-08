@@ -12,6 +12,14 @@ type ProductPageProps = {
 const ProductPage = ({ onAddToCart }: ProductPageProps) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [selectedCategory, setSelectedCategory] = useState("Alla");
+
+  const categoryOptions = ["Alla", ...categories];
+
+  const filteredProducts =
+    selectedCategory === "Alla"
+      ? products
+      : products.filter((product) => product.category === selectedCategory);
 
   // hämtar produkter från Product Service
   useEffect(() => {
@@ -40,17 +48,36 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
       <h1 className="mb-8 text-3xl font-bold">Produkter</h1>
+      <div className="mb-6">
+        <label htmlFor="category" className="mr-2">
+          Kategori
+        </label>
 
+        <select
+          id="category"
+          value={selectedCategory}
+          onChange={(e) => setSelectedCategory(e.target.value)}
+        >
+          {categoryOptions.map((category) => (
+            <option key={category} value={category}>
+              {category}
+            </option>
+          ))}
+        </select>
+      </div>
       {error ? (
         <p>ERROR: {error}</p>
       ) : products.length === 0 ? (
         <p>Produktlistan är tom.</p>
+      ) : filteredProducts.length === 0 ? (
+        <p>Inga produkter hittades i denna kategori.</p>
       ) : (
+        
         <div className="space-y-10">
           {categories.map((category) => {
-            const categoryProducts = products.filter(
-              (product) => product.category === category,
-            );
+            const categoryProducts = filteredProducts.filter(
+(product) => product.category === category,
+);
 
             // visa inte kategorin om den inte har några produkter
             if (categoryProducts.length === 0) {
