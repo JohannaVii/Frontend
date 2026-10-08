@@ -17,9 +17,11 @@ const Cart = ({ items, onIncrease, onDecrease, onCheckout }: CartProps) => {
   // om kundvagnen är tom visas ett meddelande
   if (items.length === 0) {
     return (
-      <section className="max-w-md rounded-xl border bg-white p-6 shadow-sm">
-        <h2 className="mb-4 text-2xl font-semibold">Kundvagn</h2>
-        <p className="text-gray-600">Kundvagnen är tom</p>
+      <section className="rounded-xl border border-slate-200 bg-white p-8 shadow-sm">
+        <h2 className="mb-3 text-2xl font-semibold">Kundvagnen är tom</h2>
+        <p className="text-slate-600">
+          Lägg till produkter för att fortsätta handla.
+        </p>
       </section>
     );
   }
@@ -31,11 +33,11 @@ const Cart = ({ items, onIncrease, onDecrease, onCheckout }: CartProps) => {
   );
 
   return (
-    <section className="max-w-md rounded-xl border bg-white p-6 shadow-sm">
-      <h2 className="mb-6 text-2xl font-semibold">Kundvagn</h2>
+    <section className="mx-auto max-w-2xl rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
+      <h2 className="mb-2 text-2xl font-semibold">Din kundvagn</h2>
 
       {/* visar hur många produkter som finns i kundvagnen */}
-      <p className="mb-4 text-sm text-gray-600">
+      <p className="mb-6 text-sm text-slate-500">
         Antal produkter: {items.length}
       </p>
 
@@ -48,55 +50,80 @@ const Cart = ({ items, onIncrease, onDecrease, onCheckout }: CartProps) => {
 
           return (
             // React behöver ett unikt id för varje rad
-            <li key={item.id} className="rounded-lg border bg-gray-50 p-4">
-              {/* visar produktens namn */}
-              <p className="font-semibold">{item.name}</p>
+            <li
+              key={item.id}
+              className="flex gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4"
+            >
+              {/* visar produktbilden */}
+              <div className="flex h-28 w-24 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white">
+                {item.imageUrl ? (
+                  <img
+                    src={item.imageUrl}
+                    alt={item.name}
+                    className="h-full w-full object-contain"
+                  />
+                ) : (
+                  <span className="px-2 text-center text-sm text-slate-400">
+                    Ingen bild
+                  </span>
+                )}
+              </div>
 
-              {/* pris per produkt */}
-              <p className="mt-1 text-sm text-gray-600">
-                Pris: {item.price} kr
-              </p>
+              {/* visar information om produkten */}
+              <div className="min-w-0 flex-1">
+                {/* visar produktens namn */}
+                <p className="font-semibold">{item.name}</p>
 
-              {/* knappar för att ändra antalet */}
-              <div className="mt-3 flex items-center gap-3">
-                <button
-                  onClick={() => onDecrease(item.id)}
-                  className="rounded-md border px-3 py-1 font-semibold hover:bg-gray-100"
-                >
-                  -
-                </button>
+                {/* pris per produkt */}
+                <p className="mt-1 text-sm text-slate-600">
+                  Pris: {item.price} kr
+                </p>
 
-                <span className="min-w-6 text-center font-medium">
-                  {item.quantity}
-                </span>
+                {/* knappar för att ändra antalet */}
+                <div className="mt-4 flex items-center gap-3">
+                  <button
+                    onClick={() => onDecrease(item.id)}
+                    className="rounded-md border border-slate-300 bg-white px-3 py-1 font-semibold hover:bg-slate-100"
+                  >
+                    -
+                  </button>
 
-                <button
-                  onClick={() => onIncrease(item.id)}
-                  className="rounded-md border px-3 py-1 font-semibold hover:bg-gray-100"
-                >
-                  +
-                </button>
+                  <span className="min-w-6 text-center font-medium">
+                    {item.quantity}
+                  </span>
+
+                  <button
+                    onClick={() => onIncrease(item.id)}
+                    className="rounded-md border border-slate-300 bg-white px-3 py-1 font-semibold hover:bg-slate-100"
+                  >
+                    +
+                  </button>
+                </div>
               </div>
 
               {/* visar totalpriset för just denna produkt */}
-              <p className="mt-3 font-medium">Summa: {lineTotal} kr</p>
+              {/* visar totalpriset för just denna produkt */}
+              <p className="shrink-0 self-end font-medium">{lineTotal} kr</p>
             </li>
           );
         })}
       </ul>
 
       {/* visar totalpriset för hela kundvagnen */}
-      <div className="mt-6 border-t pt-4">
-        <p className="text-lg font-bold">Totalt: {totalPrice} kr</p>
-      </div>
+      <div className="mt-6 border-t border-slate-200 pt-5">
+        <div className="flex items-center justify-between">
+          <p className="text-xl font-bold">Totalt</p>
+          <p className="text-xl font-bold">{totalPrice} kr</p>
+        </div>
 
-      {/* knapp för att skicka kundvagnen som en order */}
-      <button
-        onClick={onCheckout}
-        className="mt-4 rounded-md px-4 py-2 font-medium shadow-sm"
-      >
-        Skapa order
-      </button>
+        {/* knapp för att skicka kundvagnen som en order */}
+        <button
+          onClick={onCheckout}
+          className="mt-5 w-full rounded-md bg-pink-500 px-4 py-3 font-semibold text-white shadow-sm hover:bg-pink-600"
+        >
+          Skapa order
+        </button>
+      </div>
     </section>
   );
 };

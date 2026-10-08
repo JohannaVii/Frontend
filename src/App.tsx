@@ -181,6 +181,9 @@ const App = () => {
       // tar bort den sparade kundvagnen från sessionStorage
       sessionStorage.removeItem("cart");
 
+      // visar bekräftelse när ordern skapats
+      alert("Ordern har skapats! Se din mejl-inkorg för orderbekräftelse.");
+
       // vid fel så rensas inte sessionStorage
     } catch {
       // visar felmeddelande om ordern inte kunde skapas

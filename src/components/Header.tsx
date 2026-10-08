@@ -13,7 +13,7 @@ const Header = ({ loggIn, onLogout, cartItemCount }: HeaderProps) => {
   const isAdmin = user?.roles?.includes("ROLE_ADMIN");
 
   return (
-    <header className="border-b border-slate-200 bg-white shadow-sm">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white shadow-sm">
       <div className="mx-auto max-w-7xl px-6 flex h-16 items-center justify-between">
         <h1
           className="text-4xl text-pink-500"
