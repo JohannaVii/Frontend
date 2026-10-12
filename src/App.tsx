@@ -17,6 +17,7 @@ import type { Product } from "./types/product";
 import type { OrderRequest } from "./types/order";
 import { createOrder } from "./services/orderService";
 import ProductCreatePage from "./pages/ProductCreatePage";
+import NotFoundPage from "./pages/NotFoundPage";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(authService.isAuthenticated());
@@ -237,6 +238,7 @@ const App = () => {
           <Route path="/adminPage" element={<AdminProductPage />}></Route>
           <Route path="/createProduct" element={<ProductCreatePage />}></Route>
         </Route>
+        <Route path="*" element={<NotFoundPage/>}></Route>
       </Routes>
       <Footer />
     </>
