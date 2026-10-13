@@ -41,8 +41,25 @@ export async function createProduct(product: {
   });
 
   if (!response.ok) {
-
     throw new Error("Produkten kunde inte skapas");
   }
+  return response.json();
+}
+
+export async function getProductById(
+  id: number
+): Promise<Product> {
+  const response = await fetch(
+    `${API_BASE}/products/${id}`, 
+    {
+    headers: {
+      Authorization: `Bearer ${getToken()}`,
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Produkten kunde inte hämtas!");
+  }
+
   return response.json();
 }

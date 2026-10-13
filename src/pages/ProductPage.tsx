@@ -72,12 +72,11 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
       ) : filteredProducts.length === 0 ? (
         <p>Inga produkter hittades i denna kategori.</p>
       ) : (
-        
         <div className="space-y-10">
           {categories.map((category) => {
             const categoryProducts = filteredProducts.filter(
-(product) => product.category === category,
-);
+              (product) => product.category === category,
+            );
 
             // visa inte kategorin om den inte har några produkter
             if (categoryProducts.length === 0) {

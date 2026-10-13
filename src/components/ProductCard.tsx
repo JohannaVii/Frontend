@@ -1,4 +1,5 @@
 import type { Product } from "../types/product";
+import { Link } from "react-router-dom";
 
 // vilken data ProductCard får
 type ProductCardProps = {
@@ -23,7 +24,13 @@ const ProductCard = ({ product, onAdd }: ProductCardProps) => {
       )}
 
       <div className="p-5">
-        <h3 className="mb-2 text-xl font-semibold">{product.name}</h3>
+        {/*Länk till produkten via titeln*/}
+        <Link
+          className="mb-2 text-xl font-semibold"
+          to={`/products/${product.id}`}
+        >
+          {product.name}
+        </Link>
         <p className="mb-4 text-sm text-slate-600">{product.description}</p>
         <p className="mb-1 font-medium">
           <b>Pris:</b> {product.price} kr
