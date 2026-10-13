@@ -8,7 +8,7 @@ const NotFoundPage = () => {
             w-full max-w-lg rounded-2xl bg-white p-8 text-center shadow-lg"
       >
         <p className="mt-4 text-6xl font-bold">404</p>
-        <h1 className="mt-4 text-2x1 font-bold text-red-600">
+        <h1 className="mt-4 text-2xl font-bold text-red-600">
           Sidan kunde inte hittas!
         </h1>
         <p className="mt-4 leading-7 text-slate-500">
