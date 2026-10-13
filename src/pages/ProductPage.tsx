@@ -12,14 +12,21 @@ type ProductPageProps = {
 const ProductPage = ({ onAddToCart }: ProductPageProps) => {
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
+  const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Alla");
 
   const categoryOptions = ["Alla", ...categories];
 
-  const filteredProducts =
-    selectedCategory === "Alla"
-      ? products
-      : products.filter((product) => product.category === selectedCategory);
+  const filteredProducts = products.filter((product) => {
+    const matchesCategory =
+      selectedCategory === "Alla" || product.category === selectedCategory;
+
+    const matchesSearch =
+      product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      product.description.toLowerCase().includes(searchTerm.toLowerCase());
+
+    return matchesCategory && matchesSearch;
+  });
 
   // hämtar produkter från Product Service
   useEffect(() => {
@@ -49,6 +56,16 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
     <main className="mx-auto max-w-5xl px-6 py-10">
       <h1 className="mb-8 text-3xl font-bold">Produkter</h1>
       <div className="mb-6">
+        <input
+          id="search"
+          type="text"
+          value={searchTerm}
+          placeholder="Sök efter produkter..."
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="border rounded px-3 py-2"
+        />
+      </div>
+      <div className="mb-6">
         <label htmlFor="category" className="mr-2">
           Kategori
         </label>
@@ -70,14 +87,13 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
       ) : products.length === 0 ? (
         <p>Produktlistan är tom.</p>
       ) : filteredProducts.length === 0 ? (
-        <p>Inga produkter hittades i denna kategori.</p>
+        <p>Inga produkter hittades.</p>
       ) : (
-        
         <div className="space-y-10">
           {categories.map((category) => {
             const categoryProducts = filteredProducts.filter(
-(product) => product.category === category,
-);
+              (product) => product.category === category,
+            );
 
             // visa inte kategorin om den inte har några produkter
             if (categoryProducts.length === 0) {
