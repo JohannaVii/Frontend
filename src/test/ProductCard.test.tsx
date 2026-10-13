@@ -2,6 +2,7 @@ import { render, screen, cleanup } from "@testing-library/react";
 import { afterEach, describe, it, expect, vi } from "vitest";
 import ProductCard from "../components/ProductCard";
 import type { Product } from "../types/product";
+import { MemoryRouter } from "react-router-dom";
 
 afterEach(() => {
   cleanup();
@@ -29,7 +30,11 @@ describe("ProductCard", () => {
   });
 
   it("Visar produktbild när imageUrl finns", () => {
-    render(<ProductCard product={product} />);
+    render(
+      <MemoryRouter>
+        <ProductCard product={product} />
+      </MemoryRouter>,
+    );
 
     const image = screen.getByRole("img", {
       name: "Test-produkt 1",
@@ -45,7 +50,11 @@ describe("ProductCard", () => {
       imageUrl: "",
     };
 
-    render(<ProductCard product={productWithoutImage} />);
+    render(
+      <MemoryRouter>
+        <ProductCard product={productWithoutImage} />
+      </MemoryRouter>,
+    );
 
     expect(
       screen.queryByRole("img", { name: "Test-produkt 1" }),
@@ -54,7 +63,11 @@ describe("ProductCard", () => {
 
   it("Kör onAdd med rätt produkt", () => {
     const onAdd = vi.fn();
-    render(<ProductCard product={product} onAdd={onAdd} />);
+    render(
+      <MemoryRouter>
+        <ProductCard product={product} onAdd={onAdd} />
+      </MemoryRouter>,
+    );
     const button = screen.getByRole("button", { name: "Lägg i kundvagnen" });
     button.click();
     expect(onAdd).toHaveBeenCalledWith(product);
