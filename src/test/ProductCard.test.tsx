@@ -20,7 +20,11 @@ const product: Product = {
 
 describe("ProductCard", () => {
   it("Visar produktinformationen korrekt", () => {
-    render(<ProductCard product={product} />);
+    render(
+      <MemoryRouter>
+        <ProductCard product={product} />
+      </MemoryRouter>,
+    );
     expect(screen.getByText("Test-produkt 1")).toBeInTheDocument();
     expect(
       screen.getByText("En beskrivning till produkt-1"),
