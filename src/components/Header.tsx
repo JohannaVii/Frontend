@@ -33,7 +33,7 @@ const Header = ({ loggIn, onLogout, cartItemCount }: HeaderProps) => {
             <>
               {isAdmin ? (
                 <>
-                  <Link to="/adminPage">AdminProdukter</Link>
+                  <Link to="/adminPage">Admin produkter</Link>
                   <Link to="/createProduct">Skapa produkt</Link>
                 </>
               ) : (

@@ -1,7 +1,7 @@
 import * as authService from "./services/authServer";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import CartPage from "./pages/CartPage";
 import WelcomePage from "./pages/WelcomePage";
@@ -17,11 +17,35 @@ import type { Product } from "./types/product";
 import type { OrderRequest } from "./types/order";
 import { createOrder } from "./services/orderService";
 import ProductCreatePage from "./pages/ProductCreatePage";
-import ProductDetailPage from "./pages/ProductDetailPage";
 import NotFoundPage from "./pages/NotFoundPage";
+import ProductDetailPage from "./pages/ProductDetailPage";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(authService.isAuthenticated());
+
+  const [message, setMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  // håller reda på vilken sida användaren är på
+  const location = useLocation();
+
+  // rensar meddelanden när användaren byter sida
+  useEffect(() => {
+    setMessage("");
+    setErrorMessage("");
+  }, [location.pathname]);
+
+  // visar ett bekräftelsemeddelande och rensar tidigare fel
+  const showMessage = (text: string) => {
+    setMessage(text);
+    setErrorMessage("");
+  };
+
+  // visar ett felmeddelande och rensar tidigare bekräftelser
+  const showError = (text: string) => {
+    setErrorMessage(text);
+    setMessage("");
+  };
 
   // hämtar kundvagnen från sessionStorage när appen startar
   // om det inte finns någon sparad kundvagn börjar vi med en tom kundvagn
@@ -67,7 +91,7 @@ const App = () => {
       setCartItems([...cartItems, newItem]);
 
       // bekräftelse att produkten lagts till
-      alert(`${product.name} har lagts i kundvagnen`);
+      showMessage(`${product.name} har lagts i kundvagnen`);
       return;
     }
 
@@ -76,7 +100,7 @@ const App = () => {
 
     // kontrollera att antalet inte överstiger lagersaldot
     if (currentItem.quantity >= currentItem.stock) {
-      alert("Det finns inte tillräckligt med produkter i lager.");
+      showError("Det finns inte tillräckligt med produkter i lager.");
       return;
     }
 
@@ -91,7 +115,7 @@ const App = () => {
     // sparar den uppdaterade kundvagnen
     setCartItems(updatedItems);
 
-    alert(`${product.name} har lagts i kundvagnen`);
+    showMessage(`${product.name} har lagts i kundvagnen`);
   };
 
   // ökar antalet av en produkt som redan finns i kundvagnen
@@ -108,7 +132,7 @@ const App = () => {
 
     // kontrollerar att antalet inte överstiger lagersaldot
     if (currentItem.quantity >= currentItem.stock) {
-      alert("Det finns inte tillräckligt med produkter i lager.");
+      showError("Det finns inte tillräckligt med produkter i lager.");
       return;
     }
 
@@ -184,12 +208,14 @@ const App = () => {
       sessionStorage.removeItem("cart");
 
       // visar bekräftelse när ordern skapats
-      alert("Ordern har skapats! Se din mejl-inkorg för orderbekräftelse.");
+      showMessage(
+        "Ordern har skapats! Se din mejl-inkorg för orderbekräftelse.",
+      );
 
       // vid fel så rensas inte sessionStorage
     } catch {
       // visar felmeddelande om ordern inte kunde skapas
-      alert("Något gick fel när ordern skulle skapas!");
+      showError("Något gick fel när ordern skulle skapas!");
     }
   };
 
@@ -198,9 +224,14 @@ const App = () => {
     setLoggedIn(true);
   };
 
+  // Loggar ut via gatewayen innan vi uppdaterar frontend
   const handleLogout = async () => {
-    authService.logout();
-    setLoggedIn(false);
+    try {
+      await authService.logout();
+      setLoggedIn(false);
+    } catch {
+      showError("Utloggningen misslyckades. Försök igen.");
+    }
   };
 
   return (
@@ -210,17 +241,40 @@ const App = () => {
         onLogout={handleLogout}
         cartItemCount={cartItemCount}
       />
+
+      {/* Visar bekräftelsemeddelanden */}
+      {message && (
+        <p
+          role="status"
+          className="mx-auto mb-4 max-w-md rounded bg-green-100 p-3 text-green-800"
+        >
+          {message}
+        </p>
+      )}
+
+      {/* Visar felmeddelanden */}
+      {errorMessage && (
+        <p
+          role="alert"
+          className="mx-auto mb-4 max-w-md rounded bg-red-100 p-3 text-red-800"
+        >
+          {errorMessage}
+        </p>
+      )}
+
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />
         <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
         <Route
           path="/products"
           element={<ProductPage onAddToCart={addToCart} />}
-        ></Route>
+        />
+
+        {/* Visar detaljer för en specifik produkt */}
         <Route
           path="/products/:id"
-          element={<ProductDetailPage onAddToCart={addToCart}></ProductDetailPage>}
-        ></Route>
+          element={<ProductDetailPage onAddToCart={addToCart} />}
+        />
 
         <Route element={<ProtectedRoute />}>
           <Route path="/welcome" element={<WelcomePage />} />
@@ -243,7 +297,7 @@ const App = () => {
           <Route path="/adminPage" element={<AdminProductPage />}></Route>
           <Route path="/createProduct" element={<ProductCreatePage />}></Route>
         </Route>
-        <Route path="*" element={<NotFoundPage/>}></Route>
+        <Route path="*" element={<NotFoundPage />}></Route>
       </Routes>
       <Footer />
     </>
