@@ -1,7 +1,7 @@
 import * as authService from "./services/authServer";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import CartPage from "./pages/CartPage";
 import WelcomePage from "./pages/WelcomePage";
@@ -25,6 +25,15 @@ const App = () => {
 
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+
+  // håller reda på vilken sida användaren är på
+  const location = useLocation();
+
+  // rensar meddelanden när användaren byter sida
+  useEffect(() => {
+    setMessage("");
+    setErrorMessage("");
+  }, [location.pathname]);
 
   // visar ett bekräftelsemeddelande och rensar tidigare fel
   const showMessage = (text: string) => {
@@ -233,11 +242,25 @@ const App = () => {
         cartItemCount={cartItemCount}
       />
 
-      {/* Visar bekräftelsemeddelanden, till exempel när en produkt lagts i kundvagnen */}
-      {message && <p role="status">{message}</p>}
+      {/* Visar bekräftelsemeddelanden */}
+      {message && (
+        <p
+          role="status"
+          className="mx-auto mb-4 max-w-md rounded bg-green-100 p-3 text-green-800"
+        >
+          {message}
+        </p>
+      )}
 
       {/* Visar felmeddelanden */}
-      {errorMessage && <p role="alert">{errorMessage}</p>}
+      {errorMessage && (
+        <p
+          role="alert"
+          className="mx-auto mb-4 max-w-md rounded bg-red-100 p-3 text-red-800"
+        >
+          {errorMessage}
+        </p>
+      )}
 
       <Routes>
         <Route path="/" element={<Navigate to="/login" replace />} />

@@ -3,8 +3,7 @@ export type LoginRequest = {
   password: string;
 };
 
-export type TokenResponse = {
-  accessToken: string;
+export type LoginResponse = {
   expiresIn: number;
   subject: string;
   roles: string[];

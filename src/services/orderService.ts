@@ -1,23 +1,20 @@
 import type { OrderRequest } from "../types/order";
-import { getToken } from "./authServer";
 
-const API_BASE = import.meta.env.VITE_ORDER_API_URL;
+// hämtar gatewayens URL från .env.local
+const API_BASE = import.meta.env.VITE_GATEWAY_API_URL;
 
-// skickar en order till Order Service
+// skickar en order till Order Service via gatewayen
 export async function createOrder(orderRequest: OrderRequest) {
-  const token = getToken();
-
-  // skickar requesten till Order Service och väntar på svar
-  const response = await fetch(`${API_BASE}/orders`, {
+  const response = await fetch(`${API_BASE}/gateway/orders`, {
     method: "POST",
+    credentials: "include", // skickar med gatewayens cookie
     headers: {
       "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(orderRequest),
   });
 
-  // visar ett fel om Order Service inte kunde skapa ordern
+  // visar ett fel om ordern inte kunde skapas
   if (!response.ok) {
     throw new Error("Ordern kunde inte skapas!");
   }
