@@ -8,3 +8,11 @@ export const categories: Category[] = [
   "EARRINGS",
   "RINGS",
 ];
+
+// namn som visas för användaren
+export const categoryNames: Record<Category, string> = {
+  BRACELETS: "Armband",
+  NECKLACES: "Halsband",
+  EARRINGS: "Örhängen",
+  RINGS: "Ringar",
+};
