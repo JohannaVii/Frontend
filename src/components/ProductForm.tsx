@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { categories, type Category } from "../types/category";
+import { categories, categoryNames, type Category } from "../types/category";
 
 // data som formuläret skickar vidare när användaren klickar på Skapa produkt
 type ProductFormData = {
@@ -149,7 +149,7 @@ const ProductForm = ({ onSubmit }: ProductFormProps) => {
           {/* Skapar ett alternativ i listan för varje kategori */}
           {categories.map((categoryOption) => (
             <option key={categoryOption} value={categoryOption}>
-              {categoryOption}
+              {categoryNames[categoryOption]}
             </option>
           ))}
         </select>

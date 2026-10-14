@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Product } from "../types/product";
 import ProductCard from "../components/ProductCard";
 import { getProducts } from "../services/productService";
-import { categories } from "../types/category";
+import { categories, categoryNames, type Category } from "../types/category";
 
 type ProductPageProps = {
   onAddToCart: (product: Product) => void;
@@ -15,7 +15,7 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("Alla");
 
-  const categoryOptions = ["Alla", ...categories];
+  const categoryOptions: ("Alla" | Category)[] = ["Alla", ...categories];
 
   const filteredProducts = products.filter((product) => {
     const matchesCategory =
@@ -42,16 +42,6 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
     fetchProducts();
   }, []);
 
-  // översätter backends kategorinamn till svenska för visning på sidan
-  // Record - att man skapar ett objekt där varje kategori är en textnyckel
-  // som har ett textvärde
-  const categoryNames: Record<string, string> = {
-    BRACELETS: "Armband",
-    NECKLACES: "Halsband",
-    EARRINGS: "Örhängen",
-    RINGS: "Ringar",
-  };
-
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
       <h1 className="mb-8 text-3xl font-bold">Produkter</h1>
@@ -77,7 +67,7 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
         >
           {categoryOptions.map((category) => (
             <option key={category} value={category}>
-              {category}
+              {category === "Alla" ? "Alla" : categoryNames[category]}
             </option>
           ))}
         </select>
