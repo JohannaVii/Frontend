@@ -17,6 +17,7 @@ import type { Product } from "./types/product";
 import type { OrderRequest } from "./types/order";
 import { createOrder } from "./services/orderService";
 import ProductCreatePage from "./pages/ProductCreatePage";
+import ProductDetailPage from "./pages/ProductDetailPage";
 import NotFoundPage from "./pages/NotFoundPage";
 
 const App = () => {
@@ -215,6 +216,10 @@ const App = () => {
         <Route
           path="/products"
           element={<ProductPage onAddToCart={addToCart} />}
+        ></Route>
+        <Route
+          path="/products/:id"
+          element={<ProductDetailPage onAddToCart={addToCart}></ProductDetailPage>}
         ></Route>
 
         <Route element={<ProtectedRoute />}>
