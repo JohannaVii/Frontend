@@ -26,7 +26,7 @@ const ProductCard = ({ product, onAdd }: ProductCardProps) => {
       <div className="p-5">
         {/*Länk till produkten via titeln*/}
         <Link
-          className="mb-2 text-xl font-semibold"
+          className="mb-2 block text-xl font-semibold"
           to={`/products/${product.id}`}
         >
           {product.name}

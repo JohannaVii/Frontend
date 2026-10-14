@@ -22,6 +22,12 @@ function ProductDetailPage({ onAddToCart }: ProductDetailPageProps) {
 
       const productId = Number(id);
 
+      if (Number.isNaN(productId)) {
+        setError("Produkten finns inte");
+        setLoading(false);
+        return; // lämnar funktionen, koden nedanför körs inte
+      }
+
       try {
         const data = await getProductById(productId);
         setProduct(data);
@@ -61,21 +67,11 @@ function ProductDetailPage({ onAddToCart }: ProductDetailPageProps) {
 
         {/* Produktinformation till höger */}
         <div className="flex flex-col justify-center gap-4">
-          <h1 className="text-3xl font-bold text-slate-900">
-            {product.name}
-            </h1>
-          <p className="text-slate-600">
-            {product.description}
-            </p>
-          <p className="text-sm text-slate-500">
-            Kategori: {product.category}
-            </p>
-          <p className="text-2xl font-semibold">
-            {product.price} kr
-            </p>
-          <p className="text-sm text-slate-600">
-            I lager: {product.stock} st
-            </p>
+          <h1 className="text-3xl font-bold text-slate-900">{product.name}</h1>
+          <p className="text-slate-600">{product.description}</p>
+          <p className="text-sm text-slate-500">Kategori: {product.category}</p>
+          <p className="text-2xl font-semibold">{product.price} kr</p>
+          <p className="text-sm text-slate-600">I lager: {product.stock} st</p>
 
           <button
             type="button"

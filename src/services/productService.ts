@@ -49,11 +49,12 @@ export async function createProduct(product: {
 export async function getProductById(
   id: number
 ): Promise<Product> {
+  const token = getToken();
   const response = await fetch(
     `${API_BASE}/products/${id}`, 
     {
     headers: {
-      Authorization: `Bearer ${getToken()}`,
+      Authorization: `Bearer ${token}`,
     },
   });
 
@@ -62,4 +63,4 @@ export async function getProductById(
   }
 
   return response.json();
-}
+};
