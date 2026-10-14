@@ -1,22 +1,20 @@
-import type { LoginRequest, TokenResponse } from "../types/auth";
+import type { LoginRequest, LoginResponse } from "../types/auth";
 
-// URL till Auth Server från .env.local
-const API_BASE = import.meta.env.VITE_AUTH_API_URL;
+// URL till Gateway från .env.local
+const API_BASE = import.meta.env.VITE_GATEWAY_API_URL;
 
-// nyckeln som används för att spara JWT-token i sessionStorage
-const TOKEN_KEY = "access_token";
+// nyckel för användarinformation,inte JWT-token
+const USER_KEY = "user";
 
-// skickar användarnamn och lösenord till Auth Server
-// returnerar inloggningssvaret med accessToken, expiresIn, subject och roller
-export async function login(credentials: LoginRequest): Promise<TokenResponse> {
-  // läser inloggningssvaret från Auth Server
+// loggar in via gatewayen och låter webbläsaren hantera cookien
+export async function login(credentials: LoginRequest): Promise<LoginResponse> {
   try {
-    const response = await fetch(`${API_BASE}/auth/login`, {
+    const response = await fetch(`${API_BASE}/gateway/auth/login`, {
       method: "POST",
+      credentials: "include", // tar emot och skickar med cookies
       headers: {
         "Content-Type": "application/json",
       },
-      // gör om LoginRequest-objektet till JSON innan det skickas till backend
       body: JSON.stringify(credentials),
     });
 
@@ -35,13 +33,11 @@ export async function login(credentials: LoginRequest): Promise<TokenResponse> {
       throw new Error("Inloggningen misslyckades!");
     }
 
-    // läser JSON-svaret från Auth Server och sparar det som ett TokenResponse-objekt
-    const data: TokenResponse = await response.json();
+    // läser användarinformationen, inte JWT-token
+    const data: LoginResponse = await response.json();
 
-    // sparar accessToken i sessionStorage så att frontend kan använda den senare
-    sessionStorage.setItem(TOKEN_KEY, data.accessToken);
-
-    sessionStorage.setItem("user", JSON.stringify(data));
+    // sparar användarinformation så att WelcomePage kan visa den
+    sessionStorage.setItem(USER_KEY, JSON.stringify(data));
 
     // returnerar inloggningssvaret till komponenten som anropar login()
     return data;
@@ -57,21 +53,30 @@ export async function login(credentials: LoginRequest): Promise<TokenResponse> {
   }
 }
 
-// förberett inför kommande tasks i nästa sprint
+// loggar ut via gatewayen och ber webbläsaren att ta bort cookien
+export async function logout(): Promise<void> {
+  const response = await fetch(`${API_BASE}/gateway/auth/logout`, {
+    method: "POST",
+    credentials: "include",
+  });
 
-// tar bort användarens sparade token vid utloggning
-export function logout() {
-  sessionStorage.removeItem(TOKEN_KEY);
+  if (!response.ok) {
+    throw new Error("Utloggningen misslyckades!");
+  }
+
+  // tar bort den sparade användarinformationen
+  sessionStorage.removeItem(USER_KEY);
 }
 
-// hämtar sparad accessToken från sessionStorage
-// null returneras om ingen användare är inloggad
-export function getToken() {
-  return sessionStorage.getItem(TOKEN_KEY);
+// hämtar sparad användarinformation för frontend
+export function getUser(): LoginResponse | null {
+  const userData = sessionStorage.getItem(USER_KEY);
+
+  return userData ? (JSON.parse(userData) as LoginResponse) : null;
 }
 
-// kontrollerar om det finns en sparad accessToken
-// används för att avgöra om användaren är inloggad
-export function isAuthenticated() {
-  return getToken() !== null;
+// kontrollerar om frontend har sparad användarinformation
+// detta bevisar inte att cookien fortfarande är giltig
+export function isAuthenticated(): boolean {
+  return getUser() !== null;
 }
