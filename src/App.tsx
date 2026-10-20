@@ -9,7 +9,7 @@ import ProductPage from "./pages/ProductPage";
 import OrderPage from "./pages/OrderPage";
 import { useState, useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
-import type { LoginRequest } from "./types/auth";
+import type { LoginRequest, StoredUser } from "./types/auth";
 import AdminProductPage from "./pages/AdminProductPage";
 import AdminRoute from "./components/AdminRoute";
 import type { CartItem } from "./types/cart";
@@ -21,13 +21,39 @@ import NotFoundPage from "./pages/NotFoundPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 
 const App = () => {
-  const [loggedIn, setLoggedIn] = useState(authService.isAuthenticated());
+  // håller aktuell användare gemensamt för appens komponenter
+  const [user, setUser] = useState<StoredUser | null>(null);
+
+  // väntar tills Gateway har kontrollerat cookien
+  const [isCheckingAuth, setIsCheckingAuth] = useState(true);
 
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
   // håller reda på vilken sida användaren är på
   const location = useLocation();
+
+  // kontrollerar inloggningen när appen startar eller laddas om
+  useEffect(() => {
+    let isMounted = true;
+
+    const checkLogin = async () => {
+      const user = await authService.restoreUser();
+
+      // uppdaterar bara tillståndet om komponenten fortfarande finns kvar
+      if (isMounted) {
+        setUser(user);
+        setIsCheckingAuth(false);
+      }
+    };
+
+    void checkLogin();
+
+    // förhindrar uppdatering om komponenten avmonteras
+    return () => {
+      isMounted = false;
+    };
+  }, []);
 
   // rensar meddelanden när användaren byter sida
   useEffect(() => {
@@ -219,16 +245,17 @@ const App = () => {
     }
   };
 
+  // sparar användaren i appens gemensamma state efter inloggning
   const handleLogin = async (credentials: LoginRequest) => {
-    await authService.login(credentials);
-    setLoggedIn(true);
+    const loggedInUser = await authService.login(credentials);
+    setUser(loggedInUser);
   };
 
-  // Loggar ut via gatewayen innan vi uppdaterar frontend
+  // rensar användaren i appen när utloggningen lyckas
   const handleLogout = async () => {
     try {
       await authService.logout();
-      setLoggedIn(false);
+      setUser(null);
     } catch {
       showError("Utloggningen misslyckades. Försök igen.");
     }
@@ -237,7 +264,7 @@ const App = () => {
   return (
     <>
       <Header
-        loggIn={loggedIn}
+        loggIn={user !== null}
         onLogout={handleLogout}
         cartItemCount={cartItemCount}
       />
@@ -276,7 +303,7 @@ const App = () => {
           element={<ProductDetailPage onAddToCart={addToCart} />}
         />
 
-        <Route element={<ProtectedRoute />}>
+        <Route element={<ProtectedRoute user={user} isLoading={isCheckingAuth} />}>
           <Route path="/welcome" element={<WelcomePage />} />
           <Route
             path="/cart"
@@ -293,7 +320,7 @@ const App = () => {
         </Route>
 
         {/*Sida skyddad från kunder */}
-        <Route element={<AdminRoute />}>
+        <Route element={<AdminRoute user={user} isLoading={isCheckingAuth} />}>
           <Route path="/adminPage" element={<AdminProductPage />}></Route>
           <Route path="/createProduct" element={<ProductCreatePage />}></Route>
         </Route>

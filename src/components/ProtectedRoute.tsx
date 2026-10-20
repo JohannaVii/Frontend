@@ -1,13 +1,24 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { isAuthenticated } from "../services/authServer";
+import type { StoredUser } from "../types/auth";
 
-const ProtectedRoute = () => {
-  if (!isAuthenticated()) {
-    console.log("Du är inte inloggad!");
+type ProtectedRouteProps = {
+  user: StoredUser | null;
+  isLoading: boolean;
+};
+
+const ProtectedRoute = ({ user, isLoading }: ProtectedRouteProps) => {
+  // väntar tills Gateway har kontrollerat cookien
+  if (isLoading) {
+    return <p>Kontrollerar inloggning...</p>;
+  }
+
+  // skickar utloggade användare till inloggningssidan
+  if (!user) {
     return <Navigate to="/login" replace />;
   }
-  console.log("Du är inloggad!");
- return <Outlet/>;
+
+  // visar sidan om användaren är inloggad
+  return <Outlet />;
 };
 
 export default ProtectedRoute;

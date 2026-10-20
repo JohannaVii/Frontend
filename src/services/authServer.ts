@@ -1,13 +1,18 @@
-import type { LoginRequest, LoginResponse } from "../types/auth";
+import type {
+  CurrentUserResponse,
+  LoginRequest,
+  LoginResponse,
+  StoredUser,
+} from "../types/auth";
 
 // URL till Gateway från .env.local
 const API_BASE = import.meta.env.VITE_GATEWAY_API_URL;
 
-// nyckel för användarinformation,inte JWT-token
+// nyckel för användarinformation, inte JWT-token
 const USER_KEY = "user";
 
 // loggar in via gatewayen och låter webbläsaren hantera cookien
-export async function login(credentials: LoginRequest): Promise<LoginResponse> {
+export async function login(credentials: LoginRequest): Promise<StoredUser> {
   try {
     const response = await fetch(`${API_BASE}/gateway/auth/login`, {
       method: "POST",
@@ -36,20 +41,57 @@ export async function login(credentials: LoginRequest): Promise<LoginResponse> {
     // läser användarinformationen, inte JWT-token
     const data: LoginResponse = await response.json();
 
-    // sparar användarinformation så att WelcomePage kan visa den
-    sessionStorage.setItem(USER_KEY, JSON.stringify(data));
+    // gör om inloggningssvaret till appens gemensamma användartyp
+    const user: StoredUser = {
+      username: data.subject,
+      subject: data.subject,
+      roles: data.roles,
+      expiresIn: data.expiresIn,
+    };
 
-    // returnerar inloggningssvaret till komponenten som anropar login()
-    return data;
-
-    // körs om Auth Server inte går att nå, inget svar alls
+    sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+    return user;
   } catch (error) {
+    // körs om Auth Server inte går att nå, inget svar alls
     if (error instanceof TypeError) {
       throw new Error(
         "Kan inte ansluta till servern. Kontrollera att servern är igång.",
       );
     }
     throw error;
+  }
+}
+
+// kontrollerar om användaren fortfarande är inloggad via Gateway
+export async function restoreUser(): Promise<StoredUser | null> {
+  try {
+    const response = await fetch(`${API_BASE}/gateway/auth/me`, {
+      method: "GET",
+      credentials: "include", // skickar med den HttpOnly-cookie som finns i webbläsaren
+    });
+
+    // ingen giltig inloggning finns
+    if (!response.ok) {
+      sessionStorage.removeItem(USER_KEY);
+      return null;
+    }
+
+    // hämtar användarnamn och roller från Gateway
+    const data: CurrentUserResponse = await response.json();
+
+    // sparar användarinformation, aldrig JWT-token
+    const user: StoredUser = {
+      username: data.username,
+      subject: data.username,
+      roles: data.roles,
+    };
+
+    sessionStorage.setItem(USER_KEY, JSON.stringify(user));
+    return user;
+  } catch {
+    // om Gateway inte går att nå behandlas användaren som utloggad
+    sessionStorage.removeItem(USER_KEY);
+    return null;
   }
 }
 
@@ -69,14 +111,14 @@ export async function logout(): Promise<void> {
 }
 
 // hämtar sparad användarinformation för frontend
-export function getUser(): LoginResponse | null {
+export function getUser(): StoredUser | null {
   const userData = sessionStorage.getItem(USER_KEY);
 
-  return userData ? (JSON.parse(userData) as LoginResponse) : null;
+  return userData ? (JSON.parse(userData) as StoredUser) : null;
 }
 
-// kontrollerar om frontend har sparad användarinformation
-// detta bevisar inte att cookien fortfarande är giltig
+// kontrollerar om användarinformation finns sparad
+// giltigheten kontrolleras separat genom restoreUser() mot Gateway
 export function isAuthenticated(): boolean {
   return getUser() !== null;
 }
