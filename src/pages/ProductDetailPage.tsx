@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import type { Product } from "../types/product";
 import { getProductById } from "../services/productService";
@@ -67,6 +67,12 @@ function ProductDetailPage({ onAddToCart }: ProductDetailPageProps) {
 
         {/* Produktinformation till höger */}
         <div className="flex flex-col justify-center gap-4">
+          <Link
+            to="/products"
+            className="mb-8 self-start text-lg font-semibold text-slate-800"
+          >
+            ← Tillbaka
+          </Link>
           <h1 className="text-3xl font-bold text-slate-900">{product.name}</h1>
           <p className="text-slate-600">{product.description}</p>
           <p className="text-sm text-slate-500">Kategori: {product.category}</p>

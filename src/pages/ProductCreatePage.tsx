@@ -2,7 +2,7 @@ import ProductForm from "../components/ProductForm";
 import type { Category } from "../types/category";
 import { createProduct } from "../services/productService";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const ProductCreatePage = () => {
 
@@ -40,6 +40,12 @@ const ProductCreatePage = () => {
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
+      <Link
+        to="/adminPage"
+        className="mb-8 inline-block text-lg font-semibold text-slate-800"
+      >
+        ← Tillbaka
+      </Link>
       <h1 className="mb-8 text-3xl font-bold">Skapa produkt</h1>
       {message && (
         <p className="mb-4 rounded bg-green-100 p-3 text-green-800">

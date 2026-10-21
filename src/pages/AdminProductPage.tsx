@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import type { Product } from "../types/product";
 import ProductCard from "../components/ProductCard";
 import { getProducts } from "../services/productService";
@@ -35,6 +36,12 @@ const AdminProductPage = () => {
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
+      <Link
+        to="/products"
+        className="mb-8 inline-block text-lg font-semibold text-slate-800"
+      >
+        ← Tillbaka
+      </Link>
       <h1 className="mb-8 text-3xl font-bold">Admin - Produkter</h1>
 
       <div className="space-y-10">
