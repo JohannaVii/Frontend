@@ -8,3 +8,17 @@ export type LoginResponse = {
   subject: string;
   roles: string[];
 };
+
+// svaret från Gateway när vi kontrollerar den befintliga cookien
+export type CurrentUserResponse = {
+  username: string;
+  roles: string[];
+};
+
+// användarinformation som frontend sparar för att visa rätt sidor och meny
+export type StoredUser = {
+  username: string;
+  subject: string;
+  roles: string[];
+  expiresIn?: number;
+};
