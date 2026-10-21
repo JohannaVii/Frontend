@@ -41,7 +41,7 @@ export const handlers = [
     return HttpResponse.json([
       {
         id: 1,
-        name: "Brecelet",
+        name: "Bracelet",
         description: "Guld pläterad armband",
         price: 199,
         stock: 10,
