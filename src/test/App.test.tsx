@@ -75,7 +75,7 @@ describe("App, återställning av användare", () => {
       .mockResolvedValue(new Response(null, { status: 401 }));
 
     render(
-      <MemoryRouter initialEntries={["/gateway/auth/login"]}>
+      <MemoryRouter initialEntries={["/login"]}>
         <App></App>
       </MemoryRouter>,
     );
