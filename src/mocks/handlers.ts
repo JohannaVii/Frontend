@@ -27,8 +27,8 @@ export const handlers = [
   }),
 
   // Mockad användare
-  // Simulera ett API som returnera inloggade användare
-  http.get("*/auth/me", () => {
+  // Anropas av restoreUser() i authServer.ts
+  http.get("*gateway/auth/me", () => {
     return HttpResponse.json({
       expiresIn: 3600,
       subject: "paveena.nsw@gmail.com",
@@ -41,7 +41,7 @@ export const handlers = [
     return HttpResponse.json([
       {
         id: 1,
-        name: "Brecelet",
+        name: "Bracelet",
         description: "Guld pläterad armband",
         price: 199,
         stock: 10,
