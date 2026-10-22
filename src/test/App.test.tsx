@@ -28,11 +28,11 @@ describe("Testa produkthämtning", () => {
       </MemoryRouter>,
     );
 
-expect(await screen.findByRole("heading", { name: "Produkter" }),).toBeInTheDocument();
+expect(await screen.findByRole("heading", { name: "Produkter" })).toBeInTheDocument();
 
-expect(await screen.findByText("Brecelet")).toBeInTheDocument();
+expect(await screen.findByText("Bracelet")).toBeInTheDocument();
 
-expect(screen.getAllByText("Örhängen").length,).toBeGreaterThan(0);
+expect(screen.getAllByText("Örhängen").length).toBeGreaterThan(0);
 
 });
 
