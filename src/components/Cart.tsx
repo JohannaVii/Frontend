@@ -52,7 +52,7 @@ const Cart = ({ items, onIncrease, onDecrease, onCheckout }: CartProps) => {
             // React behöver ett unikt id för varje rad
             <li
               key={item.id}
-              className="flex gap-4 rounded-lg border border-slate-200 bg-slate-50 p-4"
+              className="flex flex-wrap gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 sm:flex-nowrap sm:gap-4 sm:p-4"
             >
               {/* visar produktbilden */}
               <div className="flex h-28 w-24 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white">
@@ -101,9 +101,10 @@ const Cart = ({ items, onIncrease, onDecrease, onCheckout }: CartProps) => {
                 </div>
               </div>
 
-              {/* visar totalpriset för just denna produkt */}
-              {/* visar totalpriset för just denna produkt */}
-              <p className="shrink-0 self-end font-medium">{lineTotal} kr</p>
+              {/* visar radens totalpris under innehållet på mobil och till höger på större skärmar */}
+              <p className="w-full text-right font-medium sm:w-auto sm:shrink-0 sm:self-end">
+                {lineTotal} kr
+              </p>
             </li>
           );
         })}

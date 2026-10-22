@@ -7,7 +7,7 @@ import CartPage from "./pages/CartPage";
 import WelcomePage from "./pages/WelcomePage";
 import ProductPage from "./pages/ProductPage";
 import OrderPage from "./pages/OrderPage";
-import { useState, useEffect } from "react";
+import { useCallback, useState, useEffect } from "react";
 import ProtectedRoute from "./components/ProtectedRoute";
 import type { LoginRequest, StoredUser } from "./types/auth";
 import AdminProductPage from "./pages/AdminProductPage";
@@ -15,10 +15,12 @@ import AdminRoute from "./components/AdminRoute";
 import type { CartItem } from "./types/cart";
 import type { Product } from "./types/product";
 import type { OrderRequest } from "./types/order";
-import { createOrder } from "./services/orderService";
+import { createCheckoutOrder } from "./services/orderService";
 import ProductCreatePage from "./pages/ProductCreatePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
+import CheckoutSuccessPage from "./pages/CheckoutSuccessPage";
+import CheckoutCancelPage from "./pages/CheckoutCancelPage";
 
 const App = () => {
   // håller aktuell användare gemensamt för appens komponenter
@@ -86,6 +88,12 @@ const App = () => {
     // gör om texten från sessionStorage till JavaScript-data
     return JSON.parse(savedCart);
   });
+
+  // tömmer kundvagnen både i React och i sessionStorage
+  const handleCheckoutSuccess = useCallback(() => {
+    setCartItems([]);
+    sessionStorage.removeItem("cart");
+  }, []);
 
   // räknar totalt antal varor i kundvagnen
   const cartItemCount = cartItems.reduce(
@@ -220,28 +228,32 @@ const App = () => {
   };
 
   const handleCheckout = async () => {
-    // skapar den information som ska skickas till Order Service
+    // hindrar checkout om kundvagnen är tom
+    if (cartItems.length === 0) {
+      showError("Kundvagnen är tom.");
+      return;
+    }
+
+    // skapar informationen som ska skickas till Order Service
     const orderRequest = createOrderRequest();
 
     try {
-      // skickar ordern till Order Service och väntar på svar
-      await createOrder(orderRequest);
+      // skapar ordern och en Stripe Checkout-session via gatewayen
+      const checkout = await createCheckoutOrder(orderRequest);
 
-      // tömmer kundvagnen efter att ordern skapats
-      setCartItems([]);
+      // kontrollerar att Stripe har returnerat en betalningsadress
+      if (!checkout.url) {
+        throw new Error("Stripe returnerade ingen betalningsadress.");
+      }
 
-      // tar bort den sparade kundvagnen från sessionStorage
-      sessionStorage.removeItem("cart");
+      // skickar kunden vidare till Stripes betalningssida
+      window.location.href = checkout.url;
+    } catch (error) {
+      // loggar felet för felsökning i webbläsarens konsol
+      console.error("Checkout misslyckades:", error);
 
-      // visar bekräftelse när ordern skapats
-      showMessage(
-        "Ordern har skapats! Se din mejl-inkorg för orderbekräftelse.",
-      );
-
-      // vid fel så rensas inte sessionStorage
-    } catch {
-      // visar felmeddelande om ordern inte kunde skapas
-      showError("Något gick fel när ordern skulle skapas!");
+      // visar ett begripligt fel för kunden
+      showError("Det gick inte att starta betalningen. Försök igen.");
     }
   };
 
@@ -269,21 +281,21 @@ const App = () => {
         cartItemCount={cartItemCount}
       />
 
-      {/* Visar bekräftelsemeddelanden */}
+      {/* visar bekräftelsemeddelanden på en fast plats på skärmen */}
       {message && (
         <p
           role="status"
-          className="mx-auto mb-4 max-w-md rounded bg-green-100 p-3 text-green-800"
+          className="fixed right-4 top-20 z-50 max-w-md rounded bg-green-100 p-3 text-green-800 shadow-md"
         >
           {message}
         </p>
       )}
 
-      {/* Visar felmeddelanden */}
+      {/* visar felmeddelanden på en fast plats på skärmen */}
       {errorMessage && (
         <p
           role="alert"
-          className="mx-auto mb-4 max-w-md rounded bg-red-100 p-3 text-red-800"
+          className="fixed right-4 top-20 z-50 max-w-md rounded bg-red-100 p-3 text-red-800 shadow-md"
         >
           {errorMessage}
         </p>
@@ -297,13 +309,25 @@ const App = () => {
           element={<ProductPage onAddToCart={addToCart} />}
         />
 
+        {/* sida som visas när kunden återvänder från Stripe */}
+        <Route
+          path="/checkout/success"
+          element={
+            <CheckoutSuccessPage onCheckoutSuccess={handleCheckoutSuccess} />
+          }
+        />
+
+        <Route path="/checkout/cancel" element={<CheckoutCancelPage />} />
+
         {/* Visar detaljer för en specifik produkt */}
         <Route
           path="/products/:id"
           element={<ProductDetailPage onAddToCart={addToCart} />}
         />
 
-        <Route element={<ProtectedRoute user={user} isLoading={isCheckingAuth} />}>
+        <Route
+          element={<ProtectedRoute user={user} isLoading={isCheckingAuth} />}
+        >
           <Route path="/welcome" element={<WelcomePage />} />
           <Route
             path="/cart"
