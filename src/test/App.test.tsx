@@ -8,7 +8,7 @@ import { server } from "../mocks/server";
 afterEach(() => {
   cleanup();
   sessionStorage.clear();
-  vi.resetAllMocks();
+  vi.restoreAllMocks();
 });
 
 vi.mock("../components/Header", () => ({
@@ -34,7 +34,10 @@ describe("App, återställning av användare", () => {
     );
 
     render(
-      <MemoryRouter initialEntries={["/gateway/auth/login"]}>
+      <MemoryRouter initialEntries={["/"]}>
+        <App />
+      </MemoryRouter>,
+    );
 
     await waitFor(() => {
       expect(screen.getByTestId("header-status")).toHaveTextContent("inloggad");
@@ -67,9 +70,9 @@ describe("App, återställning av användare", () => {
       }),
     );
 
-    const fetchMock = vi.spyOn(globalThis, "fetch").mockResolvedValue(
-        new Response(null, { status: 401 }),
-    );
+    const fetchMock = vi
+      .spyOn(globalThis, "fetch")
+      .mockResolvedValue(new Response(null, { status: 401 }));
 
     render(
       <MemoryRouter initialEntries={["/gateway/auth/login"]}>
@@ -83,27 +86,26 @@ describe("App, återställning av användare", () => {
 
     // Kontrollerar att App faktiskt anropa auth-endpointen
     expect(fetchMock).toHaveBeenCalledWith(
-        expect.stringContaining("/gateway/auth/me"),
-        expect.objectContaining({
-            method: "GET",
-            credentials: "include",
-        }),
+      expect.stringContaining("/gateway/auth/me"),
+      expect.objectContaining({
+        method: "GET",
+        credentials: "include",
+      }),
     );
 
     expect(sessionStorage.getItem("user")).toBeNull();
-          });
-        });
-        
-        describe("Testa produkthämtning", () => {
+  });
+});
+
+
+describe("Testa produkthämtning", () => {
   beforeEach(() => {
-    //Rensar all information som finns i sessionStorage
     sessionStorage.clear();
 
-    //Spara testinformation om en användare
     sessionStorage.setItem(
       "user",
       JSON.stringify({
-        expiresIn: 3600,
+        username: "paveena.nsw@gmail.com",
         subject: "paveena.nsw@gmail.com",
         roles: ["ROLE_USER"],
       }),
@@ -116,14 +118,15 @@ describe("App, återställning av användare", () => {
         <App />
       </MemoryRouter>,
     );
-          
-expect(await screen.findByRole("heading", { name: "Produkter" })).toBeInTheDocument();
 
-expect(await screen.findByText("Bracelet")).toBeInTheDocument();
+    expect(
+      await screen.findByRole("heading", { name: "Produkter" }),
+    ).toBeInTheDocument();
 
-expect(screen.getAllByText("Örhängen").length).toBeGreaterThan(0);
+    expect(await screen.findByText("Bracelet")).toBeInTheDocument();
 
-
+    expect(screen.getAllByText("Örhängen").length).toBeGreaterThan(0);
+  });
 
   it("Visar ett felmeddelande vid misslyckad produkthämtning", async () => {
     server.use(
@@ -145,4 +148,4 @@ expect(screen.getAllByText("Örhängen").length).toBeGreaterThan(0);
       await screen.findByText("ERROR: Produkter kunde inte hämtas."),
     ).toBeInTheDocument();
   });
-
+});
