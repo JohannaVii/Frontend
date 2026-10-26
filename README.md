@@ -1,75 +1,59 @@
-# React + TypeScript + Vite
+# Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## Om tjänsten
+Frontend är den del av webbshoppen som användaren ser och använder. Här kan man se produkter, registrera sig, logga in, lägga produkter i kundvagnen och skapa en order.
 
-Currently, two official plugins are available:
+Som ADMIN kan man hantera produkter.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Teknik
 
-## React Compiler
+- React
+- React Router
+- TypeScript
+- Vite
+- Vitest
+- React Testing Library
+- Playwright
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Köra lokalt
 
-## Expanding the ESLint configuration
+### Krav
+**För att köra Frontend lokalt behövs:**
+- Node.js
+- npm
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+### Miljövariabler
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+| Variabel               | Beskrivning              |
+|------------------------|--------------------------|
+| `VITE_AUTH_API_URL`    | URL till Auth Server     |
+| `VITE_PRODUCT_API_URL` | URL till Product-Service |
+| `VITE_ORDER_API_URL`   | URL till Order-Service   |
+| `VITE_GATEWAY_API_URL` | URL till Gateway         |
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+### Starta tjänsten
+**Installera dependencies:**
+`npm install`
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**Starta Frontend:**
+`npm run dev`
 
-```
+Frontend körs lokalt på port 5173.
 
-You can also install [eslint-plugin-react-x](https://npmx.dev/package/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://npmx.dev/package/eslint-plugin-react-dom) for React-specific lint rules:
+## API / Endpoints
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Frontend har inga egna endpoints!
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Anrop till backend går via Gateway.
 
-```
+## Övrigt
+
+Inloggning och behörighet hanteras med Auth Server.
+
+Tester körs med Vitest och React Testing Library.
+E2E-test av USER-flödet med Playwright.
+
+Kundvagnen sparas lokalt i webbläsaren.
+
+## Driftsatt miljö (Render)
+### Inväntar driftsättning
