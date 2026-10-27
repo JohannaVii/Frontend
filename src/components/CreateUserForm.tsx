@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ReactEventHandler } from "react";
+import { useState } from "react";
 
 type UserFormData = {
   username: string;
