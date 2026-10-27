@@ -1,5 +1,7 @@
 import { http, HttpResponse } from "msw";
 
+let isLoggedIn = false;
+
 export const handlers = [
   // Mockad inloggning
   //MSW fånga post anrop och och kör funktionen
@@ -13,6 +15,8 @@ export const handlers = [
       body.username === "paveena.nsw@gmail.com" &&
       body.password === "password"
     ) {
+      isLoggedIn = true;
+      
       return HttpResponse.json({
         expiresIn: 3600,
         subject: "paveena.nsw@gmail.com",
@@ -26,14 +30,26 @@ export const handlers = [
     );
   }),
 
-  // Mockad användare
-  // Anropas av restoreUser() i authServer.ts
-  http.get("*gateway/auth/me", () => {
-    return HttpResponse.json({
-      expiresIn: 3600,
+    // Kontrollerar om en mockad inloggning finns
+  http.get("*/gateway/auth/me", () => {
+    if (!isLoggedIn) {
+      return HttpResponse.json(
+        { message: "Inte inloggad" },
+        { status: 401 },
+      );
+    }
+        return HttpResponse.json({
+      username: "paveena.nsw@gmail.com",
       subject: "paveena.nsw@gmail.com",
       roles: ["ROLE_USER"],
     });
+  }),
+
+  // Mockad utloggning
+  http.post("*/gateway/auth/logout", () => {
+    isLoggedIn = false;
+
+    return new HttpResponse(null, { status: 204 });
   }),
 
   // Mockad produkter
