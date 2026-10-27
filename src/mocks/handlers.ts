@@ -15,6 +15,8 @@ export const handlers = [
       body.username === "paveena.nsw@gmail.com" &&
       body.password === "password"
     ) {
+      isLoggedIn = true;
+      
       return HttpResponse.json({
         expiresIn: 3600,
         subject: "paveena.nsw@gmail.com",
@@ -48,16 +50,6 @@ export const handlers = [
     isLoggedIn = false;
 
     return new HttpResponse(null, { status: 204 });
-  }),
-
-  // Mockad användare
-  // Anropas av restoreUser() i authServer.ts
-  http.get("*gateway/auth/me", () => {
-    return HttpResponse.json({
-      expiresIn: 3600,
-      subject: "paveena.nsw@gmail.com",
-      roles: ["ROLE_USER"],
-    });
   }),
 
   // Mockad produkter
