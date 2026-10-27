@@ -122,3 +122,23 @@ export function getUser(): StoredUser | null {
 export function isAuthenticated(): boolean {
   return getUser() !== null;
 }
+
+export async function registerUser(user: {
+  username: string;
+  password: string;
+}) {
+  const response = await fetch(`${API_BASE}/gateway/users/register`, {
+    method: "POST",
+    credentials: "include", // skickar med gatewayens cookie
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  });
+
+  if (!response.ok) {
+    throw new Error(`Registreringen misslyckades: ${response.status}`);
+  }
+
+  return response.json();
+}

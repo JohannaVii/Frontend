@@ -26,6 +26,7 @@ const Header = ({ loggIn, onLogout, cartItemCount }: HeaderProps) => {
             <>
               <Link to="/products">Produkter</Link>
               <Link to="/login">Logga in</Link>
+              <Link to="/register">Skapa konto</Link>
             </>
           )}
 
