@@ -9,6 +9,11 @@ export type LoginResponse = {
   roles: string[];
 };
 
+export type RegisterUser = {
+  id: number;
+  username: string;
+};
+
 // svaret från Gateway när vi kontrollerar den befintliga cookien
 export type CurrentUserResponse = {
   username: string;

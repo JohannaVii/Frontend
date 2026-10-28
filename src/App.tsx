@@ -22,6 +22,8 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import HomePage from "./pages/HomePage";
 import CheckoutSuccessPage from "./pages/CheckoutSuccessPage";
 import CheckoutCancelPage from "./pages/CheckoutCancelPage";
+import RegisterUserPage from "./pages/RegisterUserPage";
+import PublicOnlyRoute from "./components/PublicOnlyRoute";
 
 const App = () => {
   // håller aktuell användare gemensamt för appens komponenter
@@ -309,6 +311,10 @@ const App = () => {
           path="/products"
           element={<ProductPage onAddToCart={addToCart} />}
         />
+        {/*Sidan kan endast nås om nvändaren är utloggad */}
+        <Route element={<PublicOnlyRoute isLoggedIn={user !== null}></PublicOnlyRoute>}>
+          <Route path="/register" element={<RegisterUserPage />}></Route>
+        </Route>
 
         {/* sida som visas när kunden återvänder från Stripe */}
         <Route
