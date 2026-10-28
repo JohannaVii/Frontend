@@ -18,7 +18,6 @@ const Header = ({ loggIn, onLogout, cartItemCount }: HeaderProps) => {
         <Link
           to="/"
           className="font-serif text-4xl text-stone-900 no-underline"
-          style={{ fontFamily: "Quicksand" }}
         >
           KJPJ
         </Link>

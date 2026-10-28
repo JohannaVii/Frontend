@@ -17,7 +17,7 @@ export default function HomePage() {
             Smycken för varje tillfälle
           </h1>
           <p className="mt-6 text-lg leading-relaxed text-gray-600">
-            Upptäck vårt sortiment av armband, halsband och örhängen och ringar.
+            Upptäck vårt sortiment av armband, halsband, örhängen och ringar.
           </p>
 
           <Link
