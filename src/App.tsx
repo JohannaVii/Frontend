@@ -1,7 +1,7 @@
 import * as authService from "./services/authServer";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import CartPage from "./pages/CartPage";
 import WelcomePage from "./pages/WelcomePage";
