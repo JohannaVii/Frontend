@@ -4,9 +4,9 @@ import type { LoginRequest } from "../types/auth";
 
 type LogginPageProps = {
   onLogin: (credentials: LoginRequest) => Promise<void>;
-}
+};
 
-const LoginPage = ({onLogin}: LogginPageProps) => {
+const LoginPage = ({ onLogin }: LogginPageProps) => {
   // sparar användarens e-postadress
   const [username, setUsername] = useState("");
 
@@ -35,7 +35,7 @@ const LoginPage = ({onLogin}: LogginPageProps) => {
         username,
         password,
       });
-      
+
       // går till webbshoppen efter lyckad login
       navigate("/welcome", { replace: true });
     } catch (error) {
@@ -51,13 +51,13 @@ const LoginPage = ({onLogin}: LogginPageProps) => {
 
   return (
     // kopplar formuläret med onSubmit så funktionen körs när knappen klickas
-    <main className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
-      <section className="w-full max-w-md rounded-2xl bg-white p-8 shadow-lg">
-        <h1 className="mb-2 text-center text-3xl font-bold text-slate-800">
+    <main className="min-h-screen bg-[#fdfbf8] flex items-center justify-center p-4">
+      <section className="w-full max-w-md rounded-xl border border-stone-200 bg-white p-8 shadow-sm">
+        <h1 className="mb-2 text-center text-4xl font-medium text-gray-800">
           Logga in
         </h1>
 
-        <p className="mb-8 text-center text-slate-500">
+        <p className="mb-8 text-center text-gray-500">
           Logga in för att komma till webbshoppen.
         </p>
 
@@ -69,7 +69,7 @@ const LoginPage = ({onLogin}: LogginPageProps) => {
         >
           <label
             htmlFor="username"
-            className="mb-2 block text-sm font-medium text-slate-700"
+            className="mb-2 block text-sm font-medium text-gray-700"
           >
             E-post
           </label>
@@ -81,12 +81,12 @@ const LoginPage = ({onLogin}: LogginPageProps) => {
             required
             onChange={(event) => setUsername(event.target.value)}
             placeholder="name@gmail.com"
-            className="w-full rounded-lg border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full rounded-md border border-stone-400 bg-[#f4f4f3] px-4 py-3 focus:outline-none focus:border-gray-800"
           />
 
           <label
             htmlFor="password"
-            className="mb-2 block text-sm font-medium text-slate-700"
+            className="mb-2 block text-sm font-medium text-gray-700"
           >
             Lösenord
           </label>
@@ -98,7 +98,7 @@ const LoginPage = ({onLogin}: LogginPageProps) => {
             required
             onChange={(event) => setPassword(event.target.value)}
             placeholder="Lösenord"
-            className="w-full rounded-lg border border-slate-300 px-4 py-3 focus:outline-none focus:ring-2 focus:ring-teal-500"
+            className="w-full rounded-md border border-stone-400 bg-[#f4f4f3] px-4 py-3 focus:outline-none focus:border-gray-800"
           />
 
           {/* visa felmeddelande, om error innehåller text visas ett <p>, 
@@ -107,7 +107,7 @@ const LoginPage = ({onLogin}: LogginPageProps) => {
           {error && (
             <p
               role="alert"
-              className="rounded-lg bg-red-100 px-3 py-2 text-sm text-red-700"
+              className="rounded bg-red-100 px-3 py-2 text-sm text-red-700"
             >
               {error}
             </p>
@@ -115,7 +115,7 @@ const LoginPage = ({onLogin}: LogginPageProps) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-lg bg-teal-600 py-3 font-medium text-white hover:bg-teal-700"
+            className="w-full rounded-md bg-pink-600 py-3 font-medium text-white hover:bg-pink-700"
           >
             {loading ? "Loggar in..." : "Logga in"}
           </button>
