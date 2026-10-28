@@ -12,13 +12,17 @@ const RegisterUserPage = () => {
     username: string;
     password: string;
   }) => {
+    
     try {
       await registerUser(formData);
 
       setMessage("Användare skapad");
+      setErrorMessage("");
+
       setTimeout(() => {
         navigate("/login");
       }, 2000);
+
     } catch (error) {
       console.error("Användaren kunde inte skapas", error);
       setMessage("");

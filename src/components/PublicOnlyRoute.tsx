@@ -6,7 +6,7 @@ type PublicOnlyRouteProps = {
 
 const PublicOnlyRoute = ({ isLoggedIn}: PublicOnlyRouteProps) => {
     if (isLoggedIn){
-        return <Navigate to="welcome" replace/>
+        return <Navigate to="/welcome" replace/>
     };
 
     return <Outlet/>

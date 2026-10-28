@@ -12,8 +12,6 @@ export type LoginResponse = {
 export type RegisterUser = {
   id: number;
   username: string;
-  password: string;
-  roles: string[];
 };
 
 // svaret från Gateway när vi kontrollerar den befintliga cookien

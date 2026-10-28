@@ -13,11 +13,11 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
 
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
-
 
     //Felmeddelande om username fältet är tomt
     if (!username.trim()) {
@@ -32,15 +32,17 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
     }
 
     setError("");
+    setLoading(true);
 
     const formData: UserFormData = {
       username: username.trim(),
       password,
     };
+
     try {
       await onSubmit(formData);
-    } catch {
-      setError("Registreringen misslyckades, försök igen");
+    } finally{
+      setLoading(false);
     }
   };
 
@@ -51,12 +53,12 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
     >
       {/*Användarens användarnamn*/}
       <div>
-        <label htmlFor="name" className="mb-1 block font-medium">
+        <label htmlFor="username" className="mb-1 block font-medium">
           Användarnamn
         </label>
         <input
           id="username"
-          type="text"
+          type="email"
           value={username}
           onChange={(event) => setUsername(event.target.value)}
           required
@@ -67,7 +69,7 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
 
       {/*Användarens lösenord*/}
       <div>
-        <label htmlFor="name" className="mb-1 block font-medium">
+        <label htmlFor="password" className="mb-1 block font-medium">
           Lösenord
         </label>
         <input
@@ -89,9 +91,9 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
       )}
       <button
         type="submit"
+        disabled={loading}
         className="rounded-md bg-pink-500 px-5 py-2 font-medium text-white hover:bg-pink-600"
-      >
-        Skapa konto
+      > {loading ? "Skapar konto...": "Skapa konto"}
       </button>
     </form>
   );

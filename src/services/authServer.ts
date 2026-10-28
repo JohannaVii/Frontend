@@ -3,6 +3,7 @@ import type {
   LoginRequest,
   LoginResponse,
   StoredUser,
+  RegisterUser,
 } from "../types/auth";
 
 // URL till Gateway från .env.local
@@ -126,7 +127,7 @@ export function isAuthenticated(): boolean {
 export async function registerUser(user: {
   username: string;
   password: string;
-}) {
+}):Promise<RegisterUser> {
   const response = await fetch(`${API_BASE}/gateway/users/register`, {
     method: "POST",
     credentials: "include", // skickar med gatewayens cookie
@@ -140,5 +141,6 @@ export async function registerUser(user: {
     throw new Error(`Registreringen misslyckades: ${response.status}`);
   }
 
-  return response.json();
+  const data: RegisterUser = await response.json();
+  return data;
 }
