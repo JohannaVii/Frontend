@@ -12,7 +12,6 @@ const RegisterUserPage = () => {
     username: string;
     password: string;
   }) => {
-    
     try {
       await registerUser(formData);
 
@@ -22,7 +21,6 @@ const RegisterUserPage = () => {
       setTimeout(() => {
         navigate("/login");
       }, 2000);
-
     } catch (error) {
       console.error("Användaren kunde inte skapas", error);
       setMessage("");
@@ -41,27 +39,31 @@ const RegisterUserPage = () => {
   };
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
-      <Link
-        to="/login"
-        className="mb-8 inline-block text-lg font-semibold text-slate-800"
-      >
-        ← Tillbaka
-      </Link>
-      <h1 className="mb-8 text-3xl font-bold">Skapa ny användare</h1>
-      {message && (
-        <p className="mb-4 rounded bg-green-100 p-3 text-green-800">
-          {message}
-        </p>
-      )}
+    <main className="min-h-screen bg-[#fdfbf8] px-6 py-10">
+      <div className="mx-auto max-w-5xl">
+        <Link
+          to="/login"
+          className="mb-8 inline-block text-base font-medium text-gray-700"
+        >
+          ← Tillbaka
+        </Link>
+        <h1 className="mb-8 text-4xl font-medium text-gray-800">
+          Skapa ny användare
+        </h1>
+        {message && (
+          <p className="mb-4 rounded bg-green-100 p-3 text-green-800">
+            {message}
+          </p>
+        )}
 
-      {errorMessage && (
-        <p className="mb-4 rounded bg-red-100 p-3 text-red-800">
-          {errorMessage}
-        </p>
-      )}
+        {errorMessage && (
+          <p className="mb-4 rounded bg-red-100 p-3 text-red-800">
+            {errorMessage}
+          </p>
+        )}
 
-      <UserForm onSubmit={handleSubmit} />
+        <UserForm onSubmit={handleSubmit} />
+      </div>
     </main>
   );
 };

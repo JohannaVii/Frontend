@@ -1,7 +1,7 @@
 import * as authService from "./services/authServer";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import CartPage from "./pages/CartPage";
 import WelcomePage from "./pages/WelcomePage";
@@ -19,6 +19,7 @@ import { createCheckoutOrder } from "./services/orderService";
 import ProductCreatePage from "./pages/ProductCreatePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
+import HomePage from "./pages/HomePage";
 import CheckoutSuccessPage from "./pages/CheckoutSuccessPage";
 import CheckoutCancelPage from "./pages/CheckoutCancelPage";
 import RegisterUserPage from "./pages/RegisterUserPage";
@@ -304,7 +305,7 @@ const App = () => {
       )}
 
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
         <Route
           path="/products"

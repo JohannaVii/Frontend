@@ -1,1 +1,15 @@
 @import "tailwindcss";
+
+body {
+  font-family: Arial, sans-serif;
+}
+
+h1,
+h2,
+h3 {
+  font-family: "Georgia", "Times New Roman", serif;
+}
+
+button {
+  font-family: "Inter", sans-serif;
+}

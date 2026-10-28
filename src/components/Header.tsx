@@ -13,15 +13,18 @@ const Header = ({ loggIn, onLogout, cartItemCount }: HeaderProps) => {
   const isAdmin = user?.roles?.includes("ROLE_ADMIN");
 
   return (
-    <header className="sticky top-0 z-50 border-b border-slate-200 bg-white shadow-sm">
+    <header className="sticky top-0 z-50 border-b border-slate-200 bg-[#faf7f2] shadow-sm">
       <div className="mx-auto max-w-7xl px-6 flex h-16 items-center justify-between">
-        <h1
-          className="text-4xl text-pink-500"
-          style={{ fontFamily: "Quicksand" }}
+        <Link
+          to="/"
+          className="font-serif text-4xl text-stone-900 no-underline"
         >
           KJPJ
-        </h1>
-        <nav className="flex gap-6">
+        </Link>
+        <nav
+          className="flex items-center gap-8 text-base font-normal tracking-wide"
+          style={{ fontFamily: "Inter, sans-serif" }}
+        >
           {!loggIn && (
             <>
               <Link to="/products">Produkter</Link>

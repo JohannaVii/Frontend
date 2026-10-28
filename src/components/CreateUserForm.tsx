@@ -24,7 +24,7 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
       setError("Du behöver ange en e-postadress");
       return;
     }
-    
+
     //Felmeddelande om lösenordfältet är tomt
     if (!password) {
       setError("Du behöver ange ett lösenord");
@@ -41,7 +41,7 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
 
     try {
       await onSubmit(formData);
-    } finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -63,7 +63,7 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
           onChange={(event) => setUsername(event.target.value)}
           required
           placeholder="Ange email"
-          className="w-full rounded-md border px-3 py-2"
+          className="w-full rounded-md border border-stone-400 bg-[#f4f4f3] px-4 py-3 focus:outline-none focus:border-gray-800"
         />
       </div>
 
@@ -79,7 +79,7 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
           onChange={(event) => setPassword(event.target.value)}
           required
           placeholder="Ange lösenord"
-          className="w-full rounded-md border px-3 py-2"
+          className="w-full rounded-md border border-stone-400 bg-[#f4f4f3] px-4 py-3 focus:outline-none focus:border-gray-800"
         />
       </div>
 
@@ -92,8 +92,10 @@ const UserForm = ({ onSubmit }: UserFormProps) => {
       <button
         type="submit"
         disabled={loading}
-        className="rounded-md bg-pink-500 px-5 py-2 font-medium text-white hover:bg-pink-600"
-      > {loading ? "Skapar konto...": "Skapa konto"}
+        className="rounded-md bg-pink-600 px-5 py-2 font-medium text-white hover:bg-pink-700 disabled:opacity-50"
+      >
+        {" "}
+        {loading ? "Skapar konto..." : "Skapa konto"}
       </button>
     </form>
   );
