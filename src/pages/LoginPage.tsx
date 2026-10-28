@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import type { LoginRequest } from "../types/auth";
 
 type LogginPageProps = {
@@ -51,26 +51,24 @@ const LoginPage = ({ onLogin }: LogginPageProps) => {
 
   return (
     // kopplar formuläret med onSubmit så funktionen körs när knappen klickas
-    <main className="min-h-screen bg-[#fdfbf8] flex items-center justify-center p-4">
-      <section className="w-full max-w-md rounded-xl border border-stone-200 bg-white p-8 shadow-sm">
-        <h1 className="mb-2 text-center text-4xl font-medium text-gray-800">
-          Logga in
-        </h1>
+    <main className="min-h-screen bg-[#fdfbf8] flex px-6 py-10">
+      <div className="mx-auto max-w-md">
+        <Link
+          to="/"
+          className="mb-8 inline-block text-base font-medium text-gray-700"
+        >
+          ← Tillbaka
+        </Link>
 
-        <p className="mb-8 text-center text-gray-500">
-          Logga in för att komma till webbshoppen.
-        </p>
+        <h1 className="mb-8 text-4xl font-medium text-gray-800">Logga in</h1>
 
         <form
           onSubmit={handleLogin}
-          className="space-y-5"
+          className="space-y-5 rounded-xl border border-stone-200 bg-white p-6 shadow-sm"
           action="#"
           method="POST"
         >
-          <label
-            htmlFor="username"
-            className="mb-2 block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="username" className="mb-1 block font-medium">
             E-post
           </label>
 
@@ -84,10 +82,7 @@ const LoginPage = ({ onLogin }: LogginPageProps) => {
             className="w-full rounded-md border border-stone-400 bg-[#f4f4f3] px-4 py-3 focus:outline-none focus:border-gray-800"
           />
 
-          <label
-            htmlFor="password"
-            className="mb-2 block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="password" className="mb-1 block font-medium">
             Lösenord
           </label>
 
@@ -120,7 +115,7 @@ const LoginPage = ({ onLogin }: LogginPageProps) => {
             {loading ? "Loggar in..." : "Logga in"}
           </button>
         </form>
-      </section>
+      </div>
     </main>
   );
 };
