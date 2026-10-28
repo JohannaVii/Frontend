@@ -51,31 +51,35 @@ const AdminProductPage = () => {
           ← Tillbaka
         </Link>
         <h1 className="mb-8 text-4xl font-medium">Admin - Produkter</h1>
+        <div className="mb-8 flex w-full gap-4">
+          <div className="relative flex-1">
+            <img
+              src="/images/search-icon.png"
+              alt="Sökikon"
+              className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2"
+            />
 
-        <div className="mb-6">
-          <input
-            id="search"
-            type="text"
-            value={searchTerm}
-            placeholder="Sök efter produkter..."
-            onChange={(e) => setSearchTerm(e.target.value)}
-            className="border rounded px-3 py-2"
-          />
-        </div>
-
-        <div className="mb-6">
-          <label htmlFor="category" className="mr-2">
-            Kategori
-          </label>
+            <input
+              id="search"
+              type="text"
+              value={searchTerm}
+              placeholder="Sök efter produkter..."
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="w-full rounded-md border border-stone-300 bg-white py-3 pl-10 pr-4 focus:border-gray-500 focus:outline-none"
+            />
+          </div>
 
           <select
             id="category"
             value={selectedCategory}
             onChange={(e) => setSelectedCategory(e.target.value)}
+            className="w-52 rounded-md border border-stone-300 bg-white px-4 py-3 focus:border-gray-500 focus:outline-none"
           >
             {categoryOptions.map((category) => (
               <option key={category} value={category}>
-                {category === "Alla" ? "Alla" : categoryNames[category]}
+                {category === "Alla"
+                  ? "Alla kategorier"
+                  : categoryNames[category]}
               </option>
             ))}
           </select>

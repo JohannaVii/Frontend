@@ -43,31 +43,36 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#fcfbf9] px-6 py-10">
+    <main className="min-h-screen bg-[#fdfbf8] px-6 py-10">
       <h1 className="mb-8 text-4xl font-medium text-gray-800">Produkter</h1>
-      <div className="mb-6">
-        <input
-          id="search"
-          type="text"
-          value={searchTerm}
-          placeholder="Sök efter produkter..."
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="border rounded px-3 py-2"
-        />
-      </div>
-      <div className="mb-6">
-        <label htmlFor="category" className="mr-2">
-          Kategori
-        </label>
+      <div className="mb-8 flex w-full gap-4">
+        <div className="relative flex-1">
+          <img
+            src="/images/search-icon.png"
+            alt="Sökikon"
+            className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2"
+          />
+          <input
+            id="search"
+            type="text"
+            value={searchTerm}
+            placeholder="Sök efter produkter..."
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full rounded-md border border-stone-300 bg-white py-3 pl-10 pr-4 focus:outline-none focus:border-gray-500"
+          />
+        </div>
 
         <select
           id="category"
           value={selectedCategory}
           onChange={(e) => setSelectedCategory(e.target.value)}
+          className="w-52 rounded-md border border-stone-300 bg-white py-3 px-4 focus:outline-none focus:border-gray-500"
         >
           {categoryOptions.map((category) => (
             <option key={category} value={category}>
-              {category === "Alla" ? "Alla" : categoryNames[category]}
+              {category === "Alla"
+                ? "Alla kategorier"
+                : categoryNames[category]}
             </option>
           ))}
         </select>
