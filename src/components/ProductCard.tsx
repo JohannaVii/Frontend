@@ -14,19 +14,22 @@ const ProductCard = ({ product, onAdd }: ProductCardProps) => {
       {/* visar produktbilden om produkten har en imageUrl */}
       {/* saknas imageUrl blir villkoret falskt och <img>-elementet renderas inte alls */}
       {product.imageUrl && (
-        <div className="flex h-80 items-center justify-center bg-slate-50 p-2">
+        <Link
+          to={`/products/${product.id}`}
+          className="flex h-80 items-center justify-center bg-[#f4f4f3] p-4"
+        >
           <img
             src={product.imageUrl}
             alt={product.name}
             className="h-full w-full object-contain"
           />
-        </div>
+        </Link>
       )}
 
       <div className="p-5">
         {/*Länk till produkten via titeln*/}
         <Link
-          className="mb-2 block text-xl font-semibold"
+          className="mb-2 block font-serif text-xl font-semibold text-gray-800"
           to={`/products/${product.id}`}
         >
           {product.name}
@@ -43,7 +46,7 @@ const ProductCard = ({ product, onAdd }: ProductCardProps) => {
         {onAdd && (
           <button
             onClick={() => onAdd(product)}
-            className="rounded-md px-4 py-2 font-medium shadow-sm"
+            className="rounded-md bg-pink-600 px-4 py-2 font-medium text-white shadow-sm transition hover:bg-pink-700"
           >
             Lägg i kundvagnen
           </button>

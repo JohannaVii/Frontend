@@ -19,6 +19,7 @@ import { createCheckoutOrder } from "./services/orderService";
 import ProductCreatePage from "./pages/ProductCreatePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
+import HomePage from "./pages/HomePage";
 import CheckoutSuccessPage from "./pages/CheckoutSuccessPage";
 import CheckoutCancelPage from "./pages/CheckoutCancelPage";
 
@@ -302,7 +303,7 @@ const App = () => {
       )}
 
       <Routes>
-        <Route path="/" element={<Navigate to="/login" replace />} />
+        <Route path="/" element={<HomePage />} />
         <Route path="/login" element={<LoginPage onLogin={handleLogin} />} />
         <Route
           path="/products"

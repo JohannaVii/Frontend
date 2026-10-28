@@ -6,7 +6,8 @@ import { BrowserRouter } from "react-router-dom";
 //import "./test/testAuth";
 //import "./test/testOrder";
 async function enableMocking() {
-  if (import.meta.env.DEV) {
+  //if (import.meta.env.DEV) {
+  if (import.meta.env.VITE_ENABLE_MSW === "true") {
     const { worker } = await import("./mocks/browser");
 
     await worker.start({
@@ -16,9 +17,8 @@ async function enableMocking() {
 }
 
 async function startApp() {
-
   await enableMocking();
-  
+
   createRoot(document.getElementById("root")!).render(
     <StrictMode>
       <BrowserRouter>

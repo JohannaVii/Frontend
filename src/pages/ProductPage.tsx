@@ -43,8 +43,8 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
   }, []);
 
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
-      <h1 className="mb-8 text-3xl font-bold">Produkter</h1>
+    <main className="min-h-screen bg-[#fcfbf9] px-6 py-10">
+      <h1 className="mb-8 text-4xl font-medium text-gray-800">Produkter</h1>
       <div className="mb-6">
         <input
           id="search"
@@ -92,7 +92,7 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
 
             return (
               <section key={category}>
-                <h2 className="mb-5 text-2xl font-semibold">
+                <h2 className="mb-5 text-3xl font-medium text-gray-800">
                   {/* visar kategorinamnet på svenska */}
                   {categoryNames[category]}
                 </h2>

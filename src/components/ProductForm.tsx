@@ -180,7 +180,7 @@ const ProductForm = ({ onSubmit }: ProductFormProps) => {
       {/* Knapp som skickar formuläret */}
       <button
         type="submit"
-        className="rounded-md bg-pink-500 px-5 py-2 font-medium text-white hover:bg-pink-600"
+        className="rounded-md bg-pink-600 px-5 py-2 font-medium text-white hover:bg-pink-700"
       >
         Skapa produkt
       </button>
