@@ -30,7 +30,7 @@ const AdminProductPage = () => {
         const data = await getProducts();
         setProducts(data);
       } catch {
-        setError("Produkter kunde inte hämtas");
+        setError("Produkter kunde inte hämtas.");
       }
     };
 

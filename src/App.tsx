@@ -35,6 +35,9 @@ const App = () => {
   const [message, setMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
+  // true medan betalningen startas, hindrar dubbelklick på "Skapa order"
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+
   // håller reda på vilken sida användaren är på
   const location = useLocation();
 
@@ -112,6 +115,12 @@ const App = () => {
 
   // funktionen körs när användaren klickar på "Lägg i kundvagnen"
   const addToCart = (product: Product) => {
+    // en produkt som är slut i lager får inte läggas i kundvagnen
+    if (product.stock <= 0) {
+      showError("Produkten är slut i lager.");
+      return;
+    }
+
     // leta efter produkten i kundvagnen
     const index = cartItems.findIndex((item) => item.id === product.id);
 
@@ -237,8 +246,15 @@ const App = () => {
       return;
     }
 
+    // hindrar dubbelklick medan en betalning redan startas
+    if (isCheckingOut) {
+      return;
+    }
+
     // skapar informationen som ska skickas till Order Service
     const orderRequest = createOrderRequest();
+
+    setIsCheckingOut(true);
 
     try {
       // skapar ordern och en Stripe Checkout-session via gatewayen
@@ -252,11 +268,11 @@ const App = () => {
       // skickar kunden vidare till Stripes betalningssida
       window.location.href = checkout.url;
     } catch (error) {
-      // loggar felet för felsökning i webbläsarens konsol
       console.error("Checkout misslyckades:", error);
-
-      // visar ett begripligt fel för kunden
       showError("Det gick inte att starta betalningen. Försök igen.");
+    } finally {
+      // knappen aktiveras igen, även om kunden backar från Stripe
+      setIsCheckingOut(false);
     }
   };
 
@@ -312,7 +328,11 @@ const App = () => {
           element={<ProductPage onAddToCart={addToCart} />}
         />
         {/*Sidan kan endast nås om nvändaren är utloggad */}
-        <Route element={<PublicOnlyRoute isLoggedIn={user !== null}></PublicOnlyRoute>}>
+        <Route
+          element={
+            <PublicOnlyRoute isLoggedIn={user !== null}></PublicOnlyRoute>
+          }
+        >
           <Route path="/register" element={<RegisterUserPage />}></Route>
         </Route>
 
@@ -344,6 +364,7 @@ const App = () => {
                 onIncrease={increaseQuantity}
                 onDecrease={decreaseQuantity}
                 onCheckout={handleCheckout}
+                isLoading={isCheckingOut}
               />
             }
           />

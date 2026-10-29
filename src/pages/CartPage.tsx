@@ -7,6 +7,7 @@ type CartPageProps = {
   onIncrease: (productId: number) => void;
   onDecrease: (productId: number) => void;
   onCheckout: () => void;
+  isLoading: boolean;
 };
 
 const CartPage = ({
@@ -14,6 +15,7 @@ const CartPage = ({
   onIncrease,
   onDecrease,
   onCheckout,
+  isLoading,
 }: CartPageProps) => {
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
@@ -30,6 +32,7 @@ const CartPage = ({
         onIncrease={onIncrease}
         onDecrease={onDecrease}
         onCheckout={onCheckout}
+        isLoading={isLoading}
       />
     </main>
   );

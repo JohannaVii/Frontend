@@ -110,7 +110,7 @@ const LoginPage = ({ onLogin }: LogginPageProps) => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-pink-600 py-3 font-medium text-white hover:bg-pink-700"
+            className="w-full rounded-lg bg-pink-600 py-3 font-medium text-white hover:bg-pink-700 disabled:cursor-not-allowed disabled:bg-gray-300"
           >
             {loading ? "Loggar in..." : "Logga in"}
           </button>

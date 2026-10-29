@@ -78,7 +78,7 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
         </select>
       </div>
       {error ? (
-        <p>ERROR: {error}</p>
+        <p>{error}</p>
       ) : products.length === 0 ? (
         <p>Produktlistan är tom.</p>
       ) : filteredProducts.length === 0 ? (
