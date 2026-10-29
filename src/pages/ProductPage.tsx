@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import type { Product } from "../types/product";
 import ProductCard from "../components/ProductCard";
 import { getProducts } from "../services/productService";
@@ -10,10 +11,21 @@ type ProductPageProps = {
 
 // visar produkterna och skickar vidare funktionen för att lägga i kundvagnen
 const ProductPage = ({ onAddToCart }: ProductPageProps) => {
+  const [searchParams] = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("Alla");
+  const categoryFromUrl = searchParams.get("category");
+
+  const initialCategory: "Alla" | Category =
+    categories.find(
+      (category) =>
+        categoryNames[category].toLowerCase() ===
+        categoryFromUrl?.toLowerCase(),
+    ) ?? "Alla";
+  const [selectedCategory, setSelectedCategory] = useState<"Alla" | Category>(
+    initialCategory,
+  );
 
   const categoryOptions: ("Alla" | Category)[] = ["Alla", ...categories];
 
@@ -65,7 +77,9 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
         <select
           id="category"
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+          onChange={(e) =>
+            setSelectedCategory(e.target.value as "Alla" | Category)
+          }
           className="w-52 rounded-md border border-stone-300 bg-white py-3 px-4 focus:outline-none focus:border-gray-500"
         >
           {categoryOptions.map((category) => (
