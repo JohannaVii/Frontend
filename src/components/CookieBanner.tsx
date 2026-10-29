@@ -1,13 +1,29 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 
-// visar information om den nödvändiga inloggningscookien
-const CookieBanner = () => {
-  const [visible, setVisible] = useState(true);
+const DISMISSED_KEY = "cookieInfoDismissed";
 
-  // döljer bannern tills sidan laddas om
+// Kontrollerar om bannern har stängts under den aktuella sessionen
+const wasDismissed = (): boolean => {
+  try {
+    return sessionStorage.getItem(DISMISSED_KEY) === "true";
+  } catch {
+    return false;
+  }
+};
+
+const CookieBanner = () => {
+  const [visible, setVisible] = useState(() => !wasDismissed());
+
+  // Döljer bannern och sparar stängningen under sessionen
   const handleClose = () => {
     setVisible(false);
+
+    try {
+      sessionStorage.setItem(DISMISSED_KEY, "true");
+    } catch {
+      // Bannern döljs tills komponenten monteras om
+    }
   };
 
   if (!visible) {
