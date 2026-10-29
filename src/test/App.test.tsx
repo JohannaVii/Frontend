@@ -97,7 +97,6 @@ describe("App, återställning av användare", () => {
   });
 });
 
-
 describe("Testa produkthämtning", () => {
   beforeEach(() => {
     sessionStorage.clear();
@@ -131,10 +130,7 @@ describe("Testa produkthämtning", () => {
   it("Visar ett felmeddelande vid misslyckad produkthämtning", async () => {
     server.use(
       http.get("*/gateway/products", () => {
-        return HttpResponse.json(
-          { message: "Serverfel" },
-          { status: 500 },
-        );
+        return HttpResponse.json({ message: "Serverfel" }, { status: 500 });
       }),
     );
 
@@ -145,7 +141,7 @@ describe("Testa produkthämtning", () => {
     );
 
     expect(
-      await screen.findByText("ERROR: Produkter kunde inte hämtas."),
+      await screen.findByText("Produkter kunde inte hämtas."),
     ).toBeInTheDocument();
   });
 });
