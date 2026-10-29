@@ -24,6 +24,8 @@ import CheckoutSuccessPage from "./pages/CheckoutSuccessPage";
 import CheckoutCancelPage from "./pages/CheckoutCancelPage";
 import RegisterUserPage from "./pages/RegisterUserPage";
 import PublicOnlyRoute from "./components/PublicOnlyRoute";
+import CookieBanner from "./components/CookieBanner";
+import CookiesPage from "./pages/CookiesPage";
 
 const App = () => {
   // håller aktuell användare gemensamt för appens komponenter
@@ -345,6 +347,7 @@ const App = () => {
         />
 
         <Route path="/checkout/cancel" element={<CheckoutCancelPage />} />
+        <Route path="/cookies" element={<CookiesPage />} />
 
         {/* Visar detaljer för en specifik produkt */}
         <Route
@@ -379,6 +382,7 @@ const App = () => {
         <Route path="*" element={<NotFoundPage />}></Route>
       </Routes>
       <Footer />
+      <CookieBanner />
     </>
   );
 };
