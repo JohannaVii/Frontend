@@ -130,8 +130,6 @@ const ProductForm = ({ onSubmit, isSubmitting }: ProductFormProps) => {
         <input
           id="stock"
           type="number"
-          step="0.01"
-          min="0.01"
           value={stock}
           onChange={(event) => setStock(event.target.value)}
           placeholder="Ange antal i lager"
