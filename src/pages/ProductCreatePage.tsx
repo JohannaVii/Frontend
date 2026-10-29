@@ -49,7 +49,7 @@ const ProductCreatePage = () => {
         >
           ← Tillbaka
         </Link>
-        <h1 className="mb-8 text-4xl font-medium text-gray-800">
+        <h1 className="mb-8 font-serif text-4xl font-medium text-gray-800">
           Skapa produkt
         </h1>
         {message && (

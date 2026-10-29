@@ -16,13 +16,13 @@ const CheckoutSuccessPage = ({
   }, [onCheckoutSuccess]);
 
   return (
-    <main className="mx-auto max-w-2xl px-4 py-12 text-center">
-      <div className="rounded-lg border border-green-200 bg-white p-8 shadow-sm">
+    <main className="min-h-screen bg-[#fdfbf8] px-4 py-12">
+      <div className="mx-auto max-w-2xl rounded-lg border border-gray-200 bg-white p-8 text-center shadow-sm">
         <div className="mb-4 text-5xl text-green-600" aria-hidden="true">
           ✓
         </div>
 
-        <h1 className="mb-4 text-3xl font-bold text-gray-800">
+        <h1 className="mb-4 font-serif text-3xl font-medium text-gray-800">
           Betalningen lyckades!
         </h1>
 
@@ -34,7 +34,7 @@ const CheckoutSuccessPage = ({
 
         <Link
           to="/orders"
-          className="inline-block rounded-md bg-blue-600 px-6 py-3 font-semibold text-white transition hover:bg-blue-700"
+          className="inline-block rounded-md bg-pink-600 px-6 py-3 font-medium text-white transition hover:bg-pink-700"
         >
           Visa mina ordrar
         </Link>

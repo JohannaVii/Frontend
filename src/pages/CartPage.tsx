@@ -18,22 +18,26 @@ const CartPage = ({
   isLoading,
 }: CartPageProps) => {
   return (
-    <main className="mx-auto max-w-5xl px-6 py-10">
-      <Link
-        to="/products"
-        className="mb-8 inline-block text-lg font-semibold text-slate-800"
-      >
-        ← Fortsätt handla
-      </Link>
-      <h1 className="mb-8 text-3xl font-bold">Kundvagn</h1>
+    <main className="min-h-screen bg-[#fdfbf8] px-6 py-10">
+      <div className="mx-auto max-w-2xl">
+        <Link
+          to="/products"
+          className="mb-8 inline-block text-lg text-gray-700"
+        >
+          ← Fortsätt handla
+        </Link>
+        <h1 className="mb-8 font-serif text-3xl font-medium text-gray-800">
+          Kundvagn
+        </h1>
 
-      <Cart
-        items={cartItems}
-        onIncrease={onIncrease}
-        onDecrease={onDecrease}
-        onCheckout={onCheckout}
-        isLoading={isLoading}
-      />
+        <Cart
+          items={cartItems}
+          onIncrease={onIncrease}
+          onDecrease={onDecrease}
+          onCheckout={onCheckout}
+          isLoading={isLoading}
+        />
+      </div>
     </main>
   );
 };

@@ -41,7 +41,7 @@ export default function HomePage() {
             <img
               src="/images/Necklace-home.png"
               alt="Halsband"
-              className="aspect-square rounded-fullobject-cover"
+              className="aspect-square rounded-full object-cover"
             />
             <h3 className="mt-4 text-xl font-medium text-gray-800">Halsband</h3>
           </Link>
@@ -67,7 +67,7 @@ export default function HomePage() {
               alt="Örhängen"
               className="aspect-square rounded-full object-cover"
             />
-            <h3 className="mt-4 text-xl font-medium text-gray-800">Örhängen</h3 >
+            <h3 className="mt-4 text-xl font-medium text-gray-800">Örhängen</h3>
           </Link>
 
           <Link

@@ -41,7 +41,7 @@ const Cart = ({
 
   return (
     <section className="mx-auto max-w-2xl rounded-xl border border-slate-200 bg-white p-6 shadow-sm">
-      <h2 className="mb-2 text-2xl font-semibold">Din kundvagn</h2>
+      <h2 className="mb-2 font-serif text-2xl font-medium text-gray-800">Din kundvagn</h2>
 
       {/* visar hur många produkter som finns i kundvagnen */}
       <p className="mb-6 text-sm text-slate-500">
@@ -59,7 +59,7 @@ const Cart = ({
             // React behöver ett unikt id för varje rad
             <li
               key={item.id}
-              className="flex flex-wrap gap-3 rounded-lg border border-slate-200 bg-slate-50 p-3 sm:flex-nowrap sm:gap-4 sm:p-4"
+              className="flex flex-wrap gap-3 rounded-lg border border-slate-200 bg-[#f4f4f3] p-3 sm:flex-nowrap sm:gap-4 sm:p-4"
             >
               {/* visar produktbilden */}
               <div className="flex h-28 w-24 shrink-0 items-center justify-center overflow-hidden rounded-md bg-white">
@@ -79,7 +79,9 @@ const Cart = ({
               {/* visar information om produkten */}
               <div className="min-w-0 flex-1">
                 {/* visar produktens namn */}
-                <p className="font-semibold">{item.name}</p>
+                <p className="font-serif text-2xl font-medium text-gray-800">
+                  {item.name}
+                </p>
 
                 {/* pris per produkt */}
                 <p className="mt-1 text-sm text-slate-600">

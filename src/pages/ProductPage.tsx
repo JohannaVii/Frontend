@@ -61,7 +61,7 @@ const ProductPage = ({ onAddToCart }: ProductPageProps) => {
 
   return (
     <main className="min-h-screen bg-[#fdfbf8] px-6 py-10">
-      <h1 className="mb-8 text-4xl font-medium text-gray-800">Produkter</h1>
+      <h1 className="mb-8 font-serif text-4xl font-medium text-gray-800">Produkter</h1>
       <div className="mb-8 flex w-full gap-4">
         <div className="relative flex-1">
           <img
