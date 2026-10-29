@@ -46,9 +46,10 @@ const ProductCard = ({ product, onAdd }: ProductCardProps) => {
         {onAdd && (
           <button
             onClick={() => onAdd(product)}
-            className="rounded-md bg-pink-600 px-4 py-2 font-medium text-white shadow-sm transition hover:bg-pink-700"
+            disabled={product.stock <= 0}
+            className="rounded-md bg-pink-600 px-4 py-2 font-medium text-white shadow-sm transition hover:bg-pink-700 disabled:cursor-not-allowed disabled:bg-gray-300 disabled:hover:bg-gray-300"
           >
-            Lägg i kundvagnen
+            {product.stock <= 0 ? "Slut i lager" : "Lägg i kundvagnen"}
           </button>
         )}
       </div>

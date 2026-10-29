@@ -3,10 +3,8 @@ import { createRoot } from "react-dom/client";
 import "./index.css";
 import App from "./App.tsx";
 import { BrowserRouter } from "react-router-dom";
-//import "./test/testAuth";
-//import "./test/testOrder";
+
 async function enableMocking() {
-  //if (import.meta.env.DEV) {
   if (import.meta.env.VITE_ENABLE_MSW === "true") {
     const { worker } = await import("./mocks/browser");
 

@@ -14,9 +14,11 @@ type ProductFormData = {
 // ProductForm tar emot en onSubmit-funktion från sidan som använder formuläret
 type ProductFormProps = {
   onSubmit: (formData: ProductFormData) => void;
+  // true medan produkten skapas
+  isSubmitting: boolean;
 };
 
-const ProductForm = ({ onSubmit }: ProductFormProps) => {
+const ProductForm = ({ onSubmit, isSubmitting }: ProductFormProps) => {
   // state håller reda på vad användaren har skrivit i formuläret
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
@@ -110,6 +112,8 @@ const ProductForm = ({ onSubmit }: ProductFormProps) => {
         <input
           id="price"
           type="number"
+          step="0.01"
+          min="0.01"
           value={price}
           onChange={(event) => setPrice(event.target.value)}
           placeholder="Ange pris"
@@ -126,6 +130,8 @@ const ProductForm = ({ onSubmit }: ProductFormProps) => {
         <input
           id="stock"
           type="number"
+          step="0.01"
+          min="0.01"
           value={stock}
           onChange={(event) => setStock(event.target.value)}
           placeholder="Ange antal i lager"
@@ -180,9 +186,10 @@ const ProductForm = ({ onSubmit }: ProductFormProps) => {
       {/* Knapp som skickar formuläret */}
       <button
         type="submit"
-        className="rounded-md bg-pink-600 px-5 py-2 font-medium text-white hover:bg-pink-700"
+        disabled={isSubmitting}
+        className="rounded-md bg-pink-600 px-5 py-2 font-medium text-white hover:bg-pink-700 disabled:cursor-not-allowed disabled:bg-gray-300"
       >
-        Skapa produkt
+        {isSubmitting ? "Skapar..." : "Skapa produkt"}
       </button>
     </form>
   );

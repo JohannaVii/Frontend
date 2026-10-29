@@ -10,10 +10,17 @@ type CartProps = {
   onDecrease: (productId: number) => void;
   // funktion som skickar kundvagnen som en order
   onCheckout: () => void;
+  // true medan betalningen startas
+  isLoading: boolean;
 };
 
-// visar kundvagnen
-const Cart = ({ items, onIncrease, onDecrease, onCheckout }: CartProps) => {
+const Cart = ({
+  items,
+  onIncrease,
+  onDecrease,
+  onCheckout,
+  isLoading,
+}: CartProps) => {
   // om kundvagnen är tom visas ett meddelande
   if (items.length === 0) {
     return (
@@ -120,9 +127,10 @@ const Cart = ({ items, onIncrease, onDecrease, onCheckout }: CartProps) => {
         {/* knapp för att skicka kundvagnen som en order */}
         <button
           onClick={onCheckout}
-          className="mt-5 w-full rounded-md bg-pink-500 px-4 py-3 font-semibold text-white shadow-sm hover:bg-pink-600"
+          disabled={isLoading}
+          className="mt-5 w-full rounded-md bg-pink-500 px-4 py-3 font-semibold text-white shadow-sm hover:bg-pink-600 disabled:cursor-not-allowed disabled:bg-gray-300"
         >
-          Skapa order
+          {isLoading ? "Startar betalning..." : "Skapa order"}
         </button>
       </div>
     </section>
