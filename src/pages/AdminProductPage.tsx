@@ -50,7 +50,7 @@ const AdminProductPage = () => {
         >
           ← Tillbaka
         </Link>
-        <h1 className="mb-8 text-4xl font-medium">Admin - Produkter</h1>
+        <h1 className="mb-8 font-serif text-4xl font-medium text-gray-800">Admin - Produkter</h1>
         <div className="mb-8 flex w-full gap-4">
           <div className="relative flex-1">
             <img

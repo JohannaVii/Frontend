@@ -18,20 +18,20 @@ const WelcomePage = () => {
       : "Okänd roll";
 
   return (
-    <main className="min-h-screen bg-slate-100 flex items-center justify-center p-4">
+    <main className="min-h-screen bg-[#fdfbf8] flex items-center justify-center p-4">
       <section className="w-full max-w-lg rounded-2xl bg-white p-8 shadow-lg text-center">
-        <h1 className="mb-6 text-4xl font-bold text-slate-800">
+        <h1 className="mb-6 font-serif text-4xl font-medium text-gray-800">
           Välkommen till KJPJ webbshoppen!
         </h1>
 
-        <div className="rounded-xl bg-slate-50 p-6">
+        <div className="rounded-xl bg-[#f4f4f3] p-6">
           <p className="mb-2 text-lg text-slate-700">
             <span className="font-semibold">Inloggad som:</span> {user.subject}
           </p>
 
           <p className="text-lg text-slate-700">
             <span className="font-semibold">Roll:</span>{" "}
-            <span className="rounded-md bg-teal-100 px-3 py-1 text-teal-700 font-medium">
+            <span className="rounded-md bg-pink-600 px-3 py-1 text-white font-medium">
               {roleName}
             </span>
           </p>

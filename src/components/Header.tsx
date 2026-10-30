@@ -50,7 +50,7 @@ const Header = ({ loggIn, onLogout, cartItemCount }: HeaderProps) => {
                       className="h-5 w-5 object-contain"
                     />
                     <span>Kundvagn</span>
-                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-pink-500 px-1 text-xs font-medium text-white">
+                    <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-pink-600 px-1 text-xs font-medium text-white">
                       {cartItemCount}
                     </span>
                   </Link>

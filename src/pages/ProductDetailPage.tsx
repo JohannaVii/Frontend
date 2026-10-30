@@ -1,6 +1,7 @@
 import { Link, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import type { Product } from "../types/product";
+import { categoryNames } from "../types/category";
 import { getProductById } from "../services/productService";
 
 type ProductDetailPageProps = {
@@ -54,10 +55,10 @@ function ProductDetailPage({ onAddToCart }: ProductDetailPageProps) {
   }
 
   return (
-    <main className="mx-auto max-w-5xl p-6">
+    <main className="min-h-screen bg-[#fdfbf8] px-6 py-10">
       <section className="grid grid-cols-1 gap-8 rounded-xl bg-white p-6 shadow-sm md:grid-cols-2">
         {/* Produktbild till vänster */}
-        <div className="flex items-center justify-center rounded-lg bg-slate-50 p-4">
+        <div className="flex items-center justify-center rounded-lg bg-[#f4f4f3] p-4">
           <img
             src={product.imageUrl}
             alt={product.name}
@@ -69,21 +70,27 @@ function ProductDetailPage({ onAddToCart }: ProductDetailPageProps) {
         <div className="flex flex-col justify-center gap-4">
           <Link
             to="/products"
-            className="mb-8 self-start text-lg font-semibold text-slate-800"
+            className="mb-8 self-start text-base font-medium text-gray-700"
           >
             ← Tillbaka
           </Link>
-          <h1 className="text-3xl font-bold text-slate-900">{product.name}</h1>
-          <p className="text-slate-600">{product.description}</p>
-          <p className="text-sm text-slate-500">Kategori: {product.category}</p>
-          <p className="text-2xl font-semibold">{product.price} kr</p>
-          <p className="text-sm text-slate-600">I lager: {product.stock} st</p>
+          <h1 className="font-serif text-3xl font-medium text-gray-800">
+            {product.name}
+          </h1>
+          <p className="text-gray-600">{product.description}</p>
+          <p className="text-sm text-gray-500">
+            Kategori: {categoryNames[product.category]}
+          </p>
+          <p className="text-2xl font-semibold text-gray-800">
+            {product.price} kr
+          </p>
+          <p className="text-sm text-gray-600">I lager: {product.stock} st</p>
 
           <button
             type="button"
             onClick={() => onAddToCart(product)}
             disabled={product.stock === 0}
-            className="rounded-lg bg-pink-500 px-6 py-3 font-medium text-white hover:bg-slate-700 disabled:cursor-not-allowed disabled:opacity-50"
+            className="rounded-lg bg-pink-600 px-6 py-3 font-medium text-white hover:bg-pink-700 disabled:cursor-not-allowed disabled:opacity-50"
           >
             Lägg i kundvagn
           </button>
