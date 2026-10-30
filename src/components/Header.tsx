@@ -28,6 +28,17 @@ const Header = ({ loggIn, onLogout, cartItemCount }: HeaderProps) => {
           {!loggIn && (
             <>
               <Link to="/products">Produkter</Link>
+              <Link to="/cart" className="flex items-center gap-2">
+                <img
+                  src="/images/cart-icon.png"
+                  alt="Kundvagn"
+                  className="h-5 w-5 object-contain"
+                />
+                <span>Kundvagn</span>
+                <span className="flex h-5 min-w-5 items-center justify-center rounded-full bg-pink-600 px-1 text-xs font-medium text-white">
+                  {cartItemCount}
+                </span>
+              </Link>
               <Link to="/login">Logga in</Link>
               <Link to="/register">Skapa konto</Link>
             </>

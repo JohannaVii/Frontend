@@ -1,7 +1,7 @@
 import * as authService from "./services/authServer";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage";
 import CartPage from "./pages/CartPage";
 import WelcomePage from "./pages/WelcomePage";
@@ -20,6 +20,7 @@ import ProductCreatePage from "./pages/ProductCreatePage";
 import NotFoundPage from "./pages/NotFoundPage";
 import ProductDetailPage from "./pages/ProductDetailPage";
 import HomePage from "./pages/HomePage";
+import CheckoutLoginRequiredPage from "./pages/CheckoutLoginRequiredPage";
 import CheckoutSuccessPage from "./pages/CheckoutSuccessPage";
 import CheckoutCancelPage from "./pages/CheckoutCancelPage";
 import RegisterUserPage from "./pages/RegisterUserPage";
@@ -42,6 +43,9 @@ const App = () => {
 
   // håller reda på vilken sida användaren är på
   const location = useLocation();
+
+  // håller reda på navigeringen
+  const navigate = useNavigate();
 
   // kontrollerar inloggningen när appen startar eller laddas om
   useEffect(() => {
@@ -248,6 +252,12 @@ const App = () => {
       return;
     }
 
+    // användaren måste vara inloggad för att kunna skapa en order
+    if (!user) {
+      navigate("/checkout/login-required");
+      return;
+    }
+
     // hindrar dubbelklick medan en betalning redan startas
     if (isCheckingOut) {
       return;
@@ -329,13 +339,30 @@ const App = () => {
           path="/products"
           element={<ProductPage onAddToCart={addToCart} />}
         />
-        {/*Sidan kan endast nås om nvändaren är utloggad */}
+
         <Route
+          path="/cart"
           element={
-            <PublicOnlyRoute isLoggedIn={user !== null}></PublicOnlyRoute>
+            <CartPage
+              cartItems={cartItems}
+              onIncrease={increaseQuantity}
+              onDecrease={decreaseQuantity}
+              onCheckout={handleCheckout}
+              isLoading={isCheckingOut}
+            />
           }
+        />
+
+        {/*Sidan kan endast nås om användaren är utloggad */}
+        <Route element={<PublicOnlyRoute isLoggedIn={user !== null} />}>
+          <Route path="/register" element={<RegisterUserPage />} />
+        </Route>
+
+        <Route
+          element={<ProtectedRoute user={user} isLoading={isCheckingAuth} />}
         >
-          <Route path="/register" element={<RegisterUserPage />}></Route>
+          <Route path="/welcome" element={<WelcomePage />} />
+          <Route path="/orders" element={<OrderPage />} />
         </Route>
 
         {/* sida som visas när kunden återvänder från Stripe */}
@@ -347,6 +374,13 @@ const App = () => {
         />
 
         <Route path="/checkout/cancel" element={<CheckoutCancelPage />} />
+
+        {/* sida som visas när kunden försöker skapa en order utan att vara inloggad */}
+        <Route
+          path="/checkout/login-required"
+          element={<CheckoutLoginRequiredPage />}
+        />
+
         <Route path="/cookies" element={<CookiesPage />} />
 
         {/* Visar detaljer för en specifik produkt */}
@@ -354,25 +388,6 @@ const App = () => {
           path="/products/:id"
           element={<ProductDetailPage onAddToCart={addToCart} />}
         />
-
-        <Route
-          element={<ProtectedRoute user={user} isLoading={isCheckingAuth} />}
-        >
-          <Route path="/welcome" element={<WelcomePage />} />
-          <Route
-            path="/cart"
-            element={
-              <CartPage
-                cartItems={cartItems}
-                onIncrease={increaseQuantity}
-                onDecrease={decreaseQuantity}
-                onCheckout={handleCheckout}
-                isLoading={isCheckingOut}
-              />
-            }
-          />
-          <Route path="/orders" element={<OrderPage />} />
-        </Route>
 
         {/*Sida skyddad från kunder */}
         <Route element={<AdminRoute user={user} isLoading={isCheckingAuth} />}>
