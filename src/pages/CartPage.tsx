@@ -22,7 +22,7 @@ const CartPage = ({
       <div className="mx-auto max-w-2xl">
         <Link
           to="/products"
-          className="mb-8 inline-block text-lg text-gray-700"
+          className="mb-8 self-start text-base font-medium text-gray-700"
         >
           ← Fortsätt handla
         </Link>

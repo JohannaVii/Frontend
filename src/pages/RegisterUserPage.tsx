@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { registerUser } from "../services/authServer";
 import UserForm from "../components/CreateUserForm";
 
@@ -41,12 +41,13 @@ const RegisterUserPage = () => {
   return (
     <main className="min-h-screen bg-[#fdfbf8] px-6 py-10">
       <div className="mx-auto max-w-5xl">
-        <Link
-          to="/login"
-          className="mb-8 inline-block text-base font-medium text-gray-700"
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="mb-8 self-start text-base font-medium text-gray-700"
         >
           ← Tillbaka
-        </Link>
+        </button>
         <h1 className="mb-8 font-serif text-4xl font-medium text-gray-800">
           Skapa ny användare
         </h1>

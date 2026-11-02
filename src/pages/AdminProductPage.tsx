@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import type { Product } from "../types/product";
 import ProductCard from "../components/ProductCard";
 import { getProducts } from "../services/productService";
 import { categories, categoryNames, type Category } from "../types/category";
 
 const AdminProductPage = () => {
+  const navigate = useNavigate();
   const [products, setProducts] = useState<Product[]>([]);
   const [error, setError] = useState<string | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
@@ -44,12 +45,13 @@ const AdminProductPage = () => {
   return (
     <main className="min-h-screen bg-[#fdfbf8] px-6 py-10">
       <div className="mx-auto max-w-7xl">
-        <Link
-          to="/products"
-          className="mb-8 inline-block text-base font-medium text-gray-700"
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="mb-8 self-start text-base font-medium text-gray-700"
         >
           ← Tillbaka
-        </Link>
+        </button>
         <h1 className="mb-8 font-serif text-4xl font-medium text-gray-800">Admin - Produkter</h1>
         <div className="mb-8 flex w-full gap-4">
           <div className="relative flex-1">

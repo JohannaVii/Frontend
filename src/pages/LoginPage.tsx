@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import type { LoginRequest } from "../types/auth";
 
 type LogginPageProps = {
@@ -53,12 +53,13 @@ const LoginPage = ({ onLogin }: LogginPageProps) => {
     // kopplar formuläret med onSubmit så funktionen körs när knappen klickas
     <main className="min-h-screen bg-[#fdfbf8] flex px-6 py-10">
       <div className="mx-auto max-w-md">
-        <Link
-          to="/"
-          className="mb-8 inline-block text-base font-medium text-gray-700"
+        <button
+          type="button"
+          onClick={() => navigate(-1)}
+          className="mb-8 self-start text-base font-medium text-gray-700"
         >
           ← Tillbaka
-        </Link>
+        </button>
 
         <h1 className="mb-8 text-4xl font-medium text-gray-800">Logga in</h1>
 
