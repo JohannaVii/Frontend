@@ -1,4 +1,4 @@
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import type { Product } from "../types/product";
 import { categoryNames } from "../types/category";
@@ -10,7 +10,7 @@ type ProductDetailPageProps = {
 
 function ProductDetailPage({ onAddToCart }: ProductDetailPageProps) {
   const { id } = useParams();
-
+  const navigate = useNavigate();
   const [product, setProduct] = useState<Product | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
@@ -68,12 +68,13 @@ function ProductDetailPage({ onAddToCart }: ProductDetailPageProps) {
 
         {/* Produktinformation till höger */}
         <div className="flex flex-col justify-center gap-4">
-          <Link
-            to="/products"
+          <button
+            type="button"
+            onClick={() => navigate(-1)}
             className="mb-8 self-start text-base font-medium text-gray-700"
           >
             ← Tillbaka
-          </Link>
+          </button>
           <h1 className="font-serif text-3xl font-medium text-gray-800">
             {product.name}
           </h1>

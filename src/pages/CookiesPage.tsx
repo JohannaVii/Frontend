@@ -1,15 +1,19 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 // förklarar vilka cookies som används och varför
 const CookiesPage = () => {
+  const navigate = useNavigate();
+
   return (
-    <main className="mx-auto max-w-2xl px-6 py-10">
-      <Link
-        to="/"
-        className="mb-8 inline-block text-base font-medium text-gray-700"
+    <main className="min-h-screen bg-[#fdfbf8] px-6 py-10">
+      <div className="mx-auto max-w-2xl">
+      <button
+        type="button"
+        onClick={() => navigate(-1)}
+        className="mb-8 self-start text-base font-medium text-gray-700"
       >
         ← Tillbaka
-      </Link>
+      </button>
 
       <h1 className="mb-6 text-3xl font-medium text-gray-800">
         Information om cookies
@@ -46,6 +50,7 @@ const CookiesPage = () => {
         Webbläsaren sparar även din kundvagn och information om att du stängt
         cookie-informationen, men de innehåller inga inloggningsuppgifter.
       </p>
+      </div>
     </main>
   );
 };
